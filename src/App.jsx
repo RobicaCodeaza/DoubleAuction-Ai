@@ -4,6 +4,9 @@ import Dashboard from './pages/Dashboard'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 
 import AppLayout from './ui/AppLayout'
+import Agenti from './pages/Agenti'
+import Tranzactii from './pages/Tranzactii'
+import StatisticiIndividuale from './pages/StatisticiIndividuale'
 
 function App() {
     return (
@@ -20,6 +23,17 @@ function App() {
                     <Route
                         path="dashboard"
                         element={<Dashboard></Dashboard>}
+                    ></Route>
+                    <Route path="agenti" element={<Agenti></Agenti>}></Route>
+                    <Route
+                        path="tranzactii"
+                        element={<Tranzactii></Tranzactii>}
+                    ></Route>
+                    <Route
+                        path="individ"
+                        element={
+                            <StatisticiIndividuale></StatisticiIndividuale>
+                        }
                     ></Route>
                 </Route>
             </Routes>
