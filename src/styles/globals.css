@@ -30,12 +30,12 @@ body {
 
 @theme {
     --font-sans: 'K2D', sans-serif;
-    --screen-phone: 37.5em;
-    --screen-tab-port: 56.25em;
-    --screen-tab-land: 75em;
-    --screen-particular-small-laptop: 98.5em;
-    --screen-laptop: 112.5em;
-    --screen-big-desktop: 120em;
+    --breakpoint-phone: 37.5em;
+    --breakpoint-tabport: 56.25em;
+    --breakpoint-tabland: 75em;
+    --breakpoint-particularsmalllaptop: 98.5em;
+    --breakpoint-laptop: 112.5em;
+    --breakpoint-bigdesktop: 120em;
 }
 
 @theme inline {

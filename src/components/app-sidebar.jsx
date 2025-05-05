@@ -18,6 +18,7 @@ import {
     // SidebarHeader,
     SidebarRail,
 } from '@/components/ui/sidebar'
+import { Button } from './ui/button'
 
 // This is sample data.
 const data = {
@@ -145,7 +146,11 @@ export function AppSidebar({ ...props }) {
                 <NavMain items={data.navMain} />
                 {/* <NavProjects projects={data.projects} /> */}
             </SidebarContent>
-            <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
+            <SidebarFooter>
+                <Button className="border border-indigo-500 bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-slate-800">
+                    Adaugare Date ➕
+                </Button>
+            </SidebarFooter>
             <SidebarRail />
         </Sidebar>
     )
