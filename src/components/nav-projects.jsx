@@ -1,6 +1,4 @@
-"use client"
-
-import { IconDots, IconFolder, IconShare3, IconTrash } from "@tabler/icons-react";
+import { Folder, Forward, MoreHorizontal, Trash2 } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -19,16 +17,16 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-export function NavDocuments({
-  items
+export function NavProjects({
+  projects
 }) {
   const { isMobile } = useSidebar()
 
   return (
     (<SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Documents</SidebarGroupLabel>
+      <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
               <a href={item.url}>
@@ -38,29 +36,27 @@ export function NavDocuments({
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuAction
-                  showOnHover
-                  className="data-[state=open]:bg-stone-100 rounded-sm dark:data-[state=open]:bg-stone-800">
-                  <IconDots />
+                <SidebarMenuAction showOnHover>
+                  <MoreHorizontal />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-24 rounded-lg"
+                className="w-48 rounded-lg"
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}>
                 <DropdownMenuItem>
-                  <IconFolder />
-                  <span>Open</span>
+                  <Folder className="text-stone-500 dark:text-stone-400" />
+                  <span>View Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <IconShare3 />
-                  <span>Share</span>
+                  <Forward className="text-stone-500 dark:text-stone-400" />
+                  <span>Share Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem variant="destructive">
-                  <IconTrash />
-                  <span>Delete</span>
+                <DropdownMenuItem>
+                  <Trash2 className="text-stone-500 dark:text-stone-400" />
+                  <span>Delete Project</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -68,7 +64,7 @@ export function NavDocuments({
         ))}
         <SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
-            <IconDots className="text-sidebar-foreground/70" />
+            <MoreHorizontal className="text-sidebar-foreground/70" />
             <span>More</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
