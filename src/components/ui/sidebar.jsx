@@ -133,7 +133,7 @@ function SidebarProvider({
                         ...style,
                     }}
                     className={cn(
-                        'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex h-screen min-h-svh w-full overflow-scroll',
+                        'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex h-screen min-h-svh w-full',
                         className
                     )}
                     {...props}

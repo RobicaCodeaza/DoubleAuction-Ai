@@ -27,6 +27,7 @@ import { StepForward, StepBack } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Outlet } from 'react-router'
 import Icon from './../ui/Icon'
+import CreateModel from '@/features/Model/CreateModel'
 
 export default function AppLayout() {
     return (
@@ -65,9 +66,13 @@ export default function AppLayout() {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <Button className="border border-indigo-500 bg-white text-slate-700 hover:bg-indigo-50 hover:text-slate-800">
-                            Adauga Model ➕
-                        </Button>
+                        <CreateModel
+                            Trigger={
+                                <Button className="border border-indigo-500 bg-white text-slate-700 hover:bg-indigo-50 hover:text-slate-800 active:bg-indigo-100">
+                                    Adauga Model ➕
+                                </Button>
+                            }
+                        ></CreateModel>
                         <div className="flex flex-col items-center gap-1">
                             <span className="text-sm text-slate-500">
                                 Etapa simulare
