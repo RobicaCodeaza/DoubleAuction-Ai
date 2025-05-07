@@ -33,7 +33,7 @@ function Dashboard() {
                     }
                     Footer={
                         <div className="text-md w-full text-center font-medium text-slate-600">
-                            Footer
+                            24/24
                         </div>
                     }
                 ></StatisticCard>
@@ -51,7 +51,7 @@ function Dashboard() {
                     }
                     Footer={
                         <div className="text-md w-full text-center font-medium text-slate-600">
-                            Footer
+                            24/24
                         </div>
                     }
                 ></StatisticCard>{' '}
@@ -69,7 +69,7 @@ function Dashboard() {
                     }
                     Footer={
                         <div className="text-md w-full text-center font-medium text-slate-600">
-                            Footer
+                            24/24
                         </div>
                     }
                 ></StatisticCard>{' '}
@@ -87,7 +87,7 @@ function Dashboard() {
                     }
                     Footer={
                         <div className="text-md w-full text-center font-medium text-slate-600">
-                            Footer
+                            24/24
                         </div>
                     }
                 ></StatisticCard>
