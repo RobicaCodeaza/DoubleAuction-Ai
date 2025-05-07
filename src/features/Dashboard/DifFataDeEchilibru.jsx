@@ -1,7 +1,7 @@
 'use client'
 
 import { TrendingUp } from 'lucide-react'
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import {
     Card,
@@ -16,23 +16,26 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from '@/components/ui/chart'
+
+// 🔢 PASUL 1 – datele reale (preț real vs preț echilibru)
 const chartData = [
-    { month: 'January', desktop: 186, mobile: 80 },
-    { month: 'February', desktop: 305, mobile: 200 },
-    { month: 'March', desktop: 237, mobile: 120 },
-    { month: 'April', desktop: 73, mobile: 190 },
-    { month: 'May', desktop: 209, mobile: 130 },
-    { month: 'June', desktop: 214, mobile: 140 },
+    { round: 1, realPrice: 42, eqPrice: 45 },
+    { round: 2, realPrice: 47, eqPrice: 48 },
+    { round: 3, realPrice: 51, eqPrice: 50 },
+    { round: 4, realPrice: 49, eqPrice: 50 },
+    { round: 5, realPrice: 52, eqPrice: 51 },
+    { round: 6, realPrice: 54, eqPrice: 52 },
 ]
 
+// 🔧 PASUL 2 – legendă și culori (violet + blue)
 const chartConfig = {
-    desktop: {
-        label: 'Desktop',
-        color: 'hsl(var(--chart-1))',
+    realPrice: {
+        label: 'Preț real',
+        color: '#3b82f6', // blue-500
     },
-    mobile: {
-        label: 'Mobile',
-        color: 'hsl(var(--chart-2))',
+    eqPrice: {
+        label: 'Preț echilibru',
+        color: '#8b5cf6', // violet-500
     },
 }
 
@@ -40,101 +43,72 @@ export function DifFataDeEchilibru() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Area Chart - Gradient</CardTitle>
+                <CardTitle>Diferența față de prețul de echilibru</CardTitle>
                 <CardDescription>
-                    Showing total visitors for the last 6 months
+                    Compară prețul real al tranzacțiilor cu cel teoretic de
+                    echilibru, indicând deviațiile sistemice ale pieței.
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig}>
                     <AreaChart
-                        accessibilityLayer
                         data={chartData}
-                        margin={{
-                            left: 12,
-                            right: 12,
-                        }}
+                        margin={{ left: 12, right: 12 }}
                     >
-                        <CartesianGrid vertical={false} />
+                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
                         <XAxis
-                            dataKey="month"
+                            dataKey="round"
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
-                            tickFormatter={(value) => value.slice(0, 3)}
+                            label={{
+                                value: 'Rundă',
+                                position: 'insideBottom',
+                                offset: 0,
+                            }}
+                        />
+                        <YAxis
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            label={{
+                                value: 'Preț',
+                                angle: -90,
+                                position: 'insideLeft',
+                            }}
                         />
                         <ChartTooltip
-                            cursor={false}
+                            cursor={{ strokeDasharray: '3 3' }}
                             content={<ChartTooltipContent />}
                         />
-                        <defs>
-                            <linearGradient
-                                id="fillDesktop"
-                                x1="0"
-                                y1="0"
-                                x2="0"
-                                y2="1"
-                            >
-                                <stop
-                                    offset="5%"
-                                    stopColor="var(--color-desktop)"
-                                    stopOpacity={0.8}
-                                />
-                                <stop
-                                    offset="95%"
-                                    stopColor="var(--color-desktop)"
-                                    stopOpacity={0.1}
-                                />
-                            </linearGradient>
-                            <linearGradient
-                                id="fillMobile"
-                                x1="0"
-                                y1="0"
-                                x2="0"
-                                y2="1"
-                            >
-                                <stop
-                                    offset="5%"
-                                    stopColor="var(--color-mobile)"
-                                    stopOpacity={0.8}
-                                />
-                                <stop
-                                    offset="95%"
-                                    stopColor="var(--color-mobile)"
-                                    stopOpacity={0.1}
-                                />
-                            </linearGradient>
-                        </defs>
+
                         <Area
-                            dataKey="mobile"
-                            type="natural"
-                            fill="url(#fillMobile)"
-                            fillOpacity={0.4}
-                            stroke="var(--color-mobile)"
-                            stackId="a"
+                            dataKey="realPrice"
+                            type="monotone"
+                            stroke="#3b82f6"
+                            fill="#3b82f6"
+                            fillOpacity={0.2}
+                            strokeWidth={2}
                         />
                         <Area
-                            dataKey="desktop"
-                            type="natural"
-                            fill="url(#fillDesktop)"
-                            fillOpacity={0.4}
-                            stroke="var(--color-desktop)"
-                            stackId="a"
+                            dataKey="eqPrice"
+                            type="monotone"
+                            stroke="#8b5cf6"
+                            fill="#8b5cf6"
+                            fillOpacity={0.1}
+                            strokeDasharray="5 5"
+                            strokeWidth={2}
                         />
                     </AreaChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter>
-                <div className="flex w-full items-start gap-2 text-sm">
-                    <div className="grid gap-2">
-                        <div className="flex items-center gap-2 leading-none font-medium">
-                            Trending up by 5.2% this month{' '}
-                            <TrendingUp className="h-4 w-4" />
-                        </div>
-                        <div className="text-muted-foreground flex items-center gap-2 leading-none">
-                            January - June 2024
-                        </div>
-                    </div>
+            <CardFooter className="flex-col items-start gap-2 text-sm">
+                <div className="flex gap-2 leading-none font-medium text-lime-500">
+                    Deviația față de echilibru s-a redus cu 2 unități
+                    <TrendingUp className="h-4 w-4" />
+                </div>
+                <div className="text-muted-foreground leading-none">
+                    Simulare: runde 1–6
                 </div>
             </CardFooter>
         </Card>

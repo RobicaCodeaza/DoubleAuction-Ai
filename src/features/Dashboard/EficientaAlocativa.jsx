@@ -18,12 +18,12 @@ import {
     ChartTooltipContent,
 } from '@/components/ui/chart'
 const chartData = [
-    { month: 'January', desktop: 186, mobile: 80 },
-    { month: 'February', desktop: 305, mobile: 200 },
-    { month: 'March', desktop: 237, mobile: 120 },
-    { month: 'April', desktop: 73, mobile: 190 },
-    { month: 'May', desktop: 209, mobile: 130 },
-    { month: 'June', desktop: 214, mobile: 140 },
+    { round: 1, efficiency: 0.72 },
+    { round: 2, efficiency: 0.75 },
+    { round: 3, efficiency: 0.81 },
+    { round: 4, efficiency: 0.78 },
+    { round: 5, efficiency: 0.83 },
+    { round: 6, efficiency: 0.87 },
 ]
 
 const chartConfig = {
@@ -41,9 +41,10 @@ export function EficientaAlocativa() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Area Chart - Axes</CardTitle>
+                <CardTitle>Eficiența alocativă </CardTitle>
                 <CardDescription>
-                    Showing total visitors for the last 6 months
+                    Arată acumularea valorii economice generate de tranzacții în
+                    timp.
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -58,29 +59,41 @@ export function EficientaAlocativa() {
                     >
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="month"
+                            dataKey="round"
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
-                            tickFormatter={(value) => value.slice(0, 3)}
+                            label={{
+                                value: 'Rundă',
+                                position: 'insideBottom',
+                                offset: 0,
+                            }}
                         />
                         <YAxis
+                            domain={[0.6, 1]}
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
-                            tickCount={3}
+                            label={{
+                                value: 'Eficiență',
+                                angle: -90,
+                                position: 'insideLeft',
+                            }}
+                            tickFormatter={(value) =>
+                                `${(value * 100).toFixed(0)}%`
+                            }
                         />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent />}
                         />
                         <Area
-                            dataKey="mobile"
-                            type="natural"
-                            fill="var(--color-mobile)"
+                            dataKey="efficiency"
+                            type="monotone"
+                            fill="#4f46e5"
                             fillOpacity={0.4}
-                            stroke="var(--color-mobile)"
-                            stackId="a"
+                            stroke="#4f46e5"
+                            strokeWidth={2}
                         />
                     </AreaChart>
                 </ChartContainer>
@@ -88,12 +101,12 @@ export function EficientaAlocativa() {
             <CardFooter>
                 <div className="flex w-full items-start gap-2 text-sm">
                     <div className="grid gap-2">
-                        <div className="flex items-center gap-2 leading-none font-medium">
-                            Trending up by 5.2% this month{' '}
+                        <div className="flex items-center gap-2 font-medium text-lime-500">
+                            Eficiența a crescut cu +5.2% după intervenția AI
                             <TrendingUp className="h-4 w-4" />
                         </div>
-                        <div className="text-muted-foreground flex items-center gap-2 leading-none">
-                            January - June 2024
+                        <div className="text-muted-foreground leading-none">
+                            Simulare: runde 1–6
                         </div>
                     </div>
                 </div>

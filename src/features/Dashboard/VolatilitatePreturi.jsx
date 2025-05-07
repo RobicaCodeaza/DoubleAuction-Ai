@@ -1,7 +1,14 @@
 'use client'
 
 import { TrendingUp } from 'lucide-react'
-import { CartesianGrid, LabelList, Line, LineChart, XAxis } from 'recharts'
+import {
+    CartesianGrid,
+    LabelList,
+    Line,
+    LineChart,
+    XAxis,
+    YAxis,
+} from 'recharts'
 
 import {
     Card,
@@ -16,23 +23,22 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from '@/components/ui/chart'
+
+// 🔢 PASUL 1 – date corecte: coeficient de variație (0–1)
 const chartData = [
-    { month: 'January', desktop: 186, mobile: 80 },
-    { month: 'February', desktop: 305, mobile: 200 },
-    { month: 'March', desktop: 237, mobile: 120 },
-    { month: 'April', desktop: 73, mobile: 190 },
-    { month: 'May', desktop: 209, mobile: 130 },
-    { month: 'June', desktop: 214, mobile: 140 },
+    { round: 1, volatility: 0.32 },
+    { round: 2, volatility: 0.28 },
+    { round: 3, volatility: 0.24 },
+    { round: 4, volatility: 0.29 },
+    { round: 5, volatility: 0.22 },
+    { round: 6, volatility: 0.18 },
 ]
 
+// 🔧 PASUL 2 – legendă/culoare
 const chartConfig = {
-    desktop: {
-        label: 'Desktop',
-        color: 'hsl(var(--chart-1))',
-    },
-    mobile: {
-        label: 'Mobile',
-        color: 'hsl(var(--chart-2))',
+    volatility: {
+        label: 'Coeficient de variație',
+        color: '#f59e0b', // amber-500
     },
 }
 
@@ -40,61 +46,74 @@ export function VolatilitatePreturi() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Line Chart - Label</CardTitle>
-                <CardDescription>January - June 2024</CardDescription>
+                <CardTitle>Volatilitatea prețurilor</CardTitle>
+                <CardDescription>
+                    Măsoară instabilitatea prețurilor prin coeficientul de
+                    variație (CV), raport între deviația standard și media
+                    prețurilor într-o rundă.
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig}>
                     <LineChart
-                        accessibilityLayer
                         data={chartData}
-                        margin={{
-                            top: 20,
-                            left: 12,
-                            right: 12,
-                        }}
+                        margin={{ top: 20, left: 12, right: 12 }}
                     >
-                        <CartesianGrid vertical={false} />
+                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
                         <XAxis
-                            dataKey="month"
+                            dataKey="round"
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
-                            tickFormatter={(value) => value.slice(0, 3)}
+                            label={{
+                                value: 'Rundă',
+                                position: 'insideBottom',
+                                offset: 0,
+                            }}
+                        />
+                        <YAxis
+                            domain={[0, 0.5]}
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            label={{
+                                value: 'CV',
+                                angle: -90,
+                                position: 'insideLeft',
+                            }}
+                            tickFormatter={(val) => val.toFixed(2)}
                         />
                         <ChartTooltip
-                            cursor={false}
+                            cursor={{ strokeDasharray: '3 3' }}
                             content={<ChartTooltipContent indicator="line" />}
                         />
                         <Line
-                            dataKey="desktop"
-                            type="natural"
-                            stroke="#000"
+                            dataKey="volatility"
+                            type="monotone"
+                            stroke="#f59e0b"
                             strokeWidth={2}
-                            dot={{
-                                fill: '#000',
-                            }}
-                            activeDot={{
-                                r: 6,
-                            }}
+                            dot={{ fill: '#f59e0b' }}
+                            activeDot={{ r: 6 }}
                         >
                             <LabelList
+                                dataKey="volatility"
                                 position="top"
                                 offset={12}
-                                className="fill-foreground"
+                                fill="#f59e0b"
                                 fontSize={12}
+                                formatter={(val) => val.toFixed(2)}
                             />
                         </Line>
                     </LineChart>
                 </ChartContainer>
             </CardContent>
             <CardFooter className="flex-col items-start gap-2 text-sm">
-                <div className="flex gap-2 leading-none font-medium">
-                    Trending up by 5.2% this month{' '}
+                <div className="flex gap-2 leading-none font-medium text-lime-500">
+                    Volatilitatea a scăzut cu 0.14 unități
                     <TrendingUp className="h-4 w-4" />
                 </div>
                 <div className="text-muted-foreground leading-none">
-                    Showing total visitors for the last 6 months
+                    Simulare: runde 1–6
                 </div>
             </CardFooter>
         </Card>

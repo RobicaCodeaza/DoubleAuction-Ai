@@ -79,12 +79,20 @@ export default function AppLayout() {
                             </span>
 
                             <div className="flex gap-1">
-                                <Button size="sm">
+                                <Button
+                                    size="sm"
+                                    className="bg-indigo-200 text-indigo-800 hover:bg-indigo-300 active:bg-indigo-400"
+                                >
                                     <Icon>
                                         <StepBack></StepBack>
                                     </Icon>
                                 </Button>
-                                <Button size="sm">
+                                <Button
+                                    size="sm"
+                                    className={
+                                        'bg-indigo-200 text-indigo-800 hover:bg-indigo-300 active:bg-indigo-400'
+                                    }
+                                >
                                     <Icon>
                                         <StepForward></StepForward>
                                     </Icon>
