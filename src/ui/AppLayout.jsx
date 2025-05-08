@@ -34,8 +34,8 @@ export default function AppLayout() {
         <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-                <header className="flex items-center justify-between gap-2 px-8 py-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-auto">
-                    <div className="flex items-center gap-2 px-4">
+                <header className="tabport:px-8 flex items-center justify-between gap-2 px-4 py-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-auto">
+                    <div className="tabport:px-4 flex items-center px-2">
                         <SidebarTrigger className="-ml-1" />
                         <Separator
                             orientation="vertical"
@@ -66,13 +66,24 @@ export default function AppLayout() {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <CreateModel
-                            Trigger={
-                                <Button className="border border-indigo-500 bg-white text-slate-700 hover:bg-indigo-50 hover:text-slate-800 active:bg-indigo-100">
-                                    Adauga Model ➕
-                                </Button>
-                            }
-                        ></CreateModel>
+                        <div className="tabland:flex-row flex flex-col gap-2">
+                            <CreateModel
+                                Trigger={
+                                    <Button
+                                        size={'sm'}
+                                        className="border border-indigo-500 bg-white text-slate-700 hover:bg-indigo-50 hover:text-slate-800 active:bg-indigo-100"
+                                    >
+                                        Adauga Model ➕
+                                    </Button>
+                                }
+                            ></CreateModel>
+                            <Button
+                                size={'sm'}
+                                className="border border-indigo-500 bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-slate-800"
+                            >
+                                Adaugare Date ➕
+                            </Button>
+                        </div>
                         <div className="flex flex-col items-center gap-1">
                             <span className="text-sm text-slate-500">
                                 Etapa simulare
