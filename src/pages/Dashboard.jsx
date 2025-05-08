@@ -14,7 +14,7 @@ function Dashboard() {
     const Header = <HeaderStatisticCard></HeaderStatisticCard>
 
     return (
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="tabland:px-8 flex flex-1 flex-col gap-4 px-4 py-4 pt-0">
             <div className="tabport:grid-cols-4 grid auto-rows-min grid-cols-2 gap-4">
                 {/* <div className="aspect-video rounded-xl bg-slate-50" />
                 <div className="aspect-video rounded-xl bg-slate-50" />
