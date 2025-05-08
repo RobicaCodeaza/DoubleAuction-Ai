@@ -146,11 +146,7 @@ export function AppSidebar({ ...props }) {
                 <NavMain items={data.navMain} />
                 {/* <NavProjects projects={data.projects} /> */}
             </SidebarContent>
-            <SidebarFooter>
-                <Button className="border border-indigo-500 bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-slate-800">
-                    Adaugare Date ➕
-                </Button>
-            </SidebarFooter>
+            <SidebarFooter></SidebarFooter>
             <SidebarRail />
         </Sidebar>
     )
