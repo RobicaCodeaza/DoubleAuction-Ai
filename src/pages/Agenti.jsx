@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
-import ContentStatisticCardAgent from '@/features/Agenti/ContentStatisticCardAgent'
+import ContentStatisticCardAgent from '@/ui/ContentStatisticCard'
 import CreareAgent from '@/features/Agenti/CreareAgent'
-import HeaderStatisticCardAgent from '@/features/Agenti/HeaderStatisticCardAgent'
+import HeaderStatisticCardAgent from '@/ui/HeaderStatisticCard'
 import TableAgenti from '@/features/Agenti/TableAgenti'
 import StatisticCard from '@/ui/StatisticCard'
 import {
