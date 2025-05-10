@@ -26,11 +26,13 @@ export function StergereAgent() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">
-                    <Icon>
-                        <Trash className="mr-2 h-4 w-4" />
-                    </Icon>
-                </Button>
+                <span className="flex">
+                    <Button variant="outline">
+                        <Icon>
+                            <Trash className="mr-2 h-4 w-4" />
+                        </Icon>
+                    </Button>
+                </span>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

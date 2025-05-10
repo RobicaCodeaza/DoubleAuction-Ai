@@ -42,7 +42,9 @@ export function DetaliiAgent() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">Detalii</Button>
+                <span className="flex">
+                    <Button variant="outline">Detalii</Button>
+                </span>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[520px]">
                 <DialogHeader>

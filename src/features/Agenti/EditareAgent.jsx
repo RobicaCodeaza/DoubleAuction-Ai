@@ -24,7 +24,9 @@ export function EditareAgent() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">Editare</Button>
+                <span className="flex">
+                    <Button variant="outline">Editare</Button>
+                </span>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
