@@ -1,6 +1,6 @@
 import Icon from '@/ui/Icon'
 
-function HeaderStatisticCardAgent({ IconStats, title }) {
+function HeaderStatisticCard({ IconStats, title }) {
     return (
         <div className="flex w-full items-center justify-between border-b border-slate-300 px-2 py-2 text-sm">
             <Icon
@@ -17,4 +17,4 @@ function HeaderStatisticCardAgent({ IconStats, title }) {
     )
 }
 
-export default HeaderStatisticCardAgent
+export default HeaderStatisticCard
