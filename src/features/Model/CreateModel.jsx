@@ -33,7 +33,9 @@ function CreateModel({ Trigger }) {
 
     return (
         <Drawer>
-            <DrawerTrigger asChild>{Trigger}</DrawerTrigger>
+            <DrawerTrigger asChild>
+                <span className="flex">{Trigger}</span>
+            </DrawerTrigger>
             <DrawerContent className="bg-slate-50">
                 <div className="mx-auto my-10 w-full max-w-max rounded-md border border-indigo-100 bg-white px-24 py-6 shadow-lg ring-1 shadow-indigo-900/5 ring-indigo-900/10">
                     {/* <DrawerHeader>

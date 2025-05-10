@@ -43,8 +43,8 @@ export default function AppLayout() {
                         />
                     </div>
                     <div className="flex flex-1 items-center justify-between">
-                        <Select>
-                            <SelectTrigger className="w-[180px]">
+                        <Select className="w-24">
+                            <SelectTrigger className="phone:w-[180px] w-[100px]">
                                 <SelectValue placeholder="Select a fruit" />
                             </SelectTrigger>
                             <SelectContent>
@@ -66,7 +66,7 @@ export default function AppLayout() {
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <div className="tabland:flex-row flex flex-col gap-2">
+                        <div className="tabland:flex-row flex flex-col items-center gap-2">
                             <CreateModel
                                 Trigger={
                                     <Button
@@ -79,9 +79,9 @@ export default function AppLayout() {
                             ></CreateModel>
                             <Button
                                 size={'sm'}
-                                className="border border-indigo-500 bg-white text-slate-700 hover:bg-indigo-50 hover:text-slate-800 active:bg-indigo-100"
+                                className="my-0 border border-indigo-500 bg-white text-slate-700 hover:bg-indigo-50 hover:text-slate-800 active:bg-indigo-100"
                             >
-                                Adauga Date ➕
+                                Adauga Data ➕
                             </Button>
                         </div>
                         <div className="flex flex-col items-center gap-1">
@@ -112,7 +112,7 @@ export default function AppLayout() {
                         </div>
                     </div>
                 </header>
-                <div className="phone:p-4 flex flex-1 flex-col gap-4 p-2 pt-0">
+                <div className="phone:p-4 mt-4 flex flex-1 flex-col gap-4 border-t border-t-slate-200 p-2 py-4 dark:border-t-slate-700">
                     <Outlet></Outlet>
                 </div>
             </SidebarInset>
