@@ -2,7 +2,7 @@ import { DifFataDeEchilibru } from '@/features/Dashboard/DifFataDeEchilibru'
 import { EficientaAlocativa } from '@/features/Dashboard/EficientaAlocativa'
 import HeaderStatisticCard from '@/features/Dashboard/HeaderStatisticCard'
 import { RataTranzactionare } from '@/features/Dashboard/RataTranzactionare'
-import StatisticCard from '@/features/Dashboard/StatisticCard'
+import StatisticCard from '@/ui/StatisticCard'
 import { VolatilitatePreturi } from '@/features/Dashboard/VolatilitatePreturi'
 import {
     ArrowRightLeft,

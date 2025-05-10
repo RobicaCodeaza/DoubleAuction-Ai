@@ -16,7 +16,6 @@ export function DetaliiAgent() {
         nume: 'Agent 7',
         comportament: 'Agresiv',
         ascultaTrend: 'Ridicat',
-        profilRisc: 'Moderată',
         invataIstoric: 'Da',
         prioritate: 'Preț',
     }
@@ -27,12 +26,6 @@ export function DetaliiAgent() {
                 return value === 'Agresiv' ? 'destructive' : 'secondary'
             case 'ascultaTrend':
                 return value === 'Ridicat' ? 'cyan' : 'muted'
-            case 'profilRisc':
-                return value === 'Ridicat'
-                    ? 'amber'
-                    : value === 'Scăzut'
-                      ? 'lime'
-                      : 'default'
             case 'invataIstoric':
                 return value === 'Da' ? 'violet' : 'outline'
             case 'prioritate':

@@ -79,9 +79,9 @@ export default function AppLayout() {
                             ></CreateModel>
                             <Button
                                 size={'sm'}
-                                className="border border-indigo-500 bg-slate-100 text-slate-700 hover:bg-indigo-50 hover:text-slate-800"
+                                className="border border-indigo-500 bg-white text-slate-700 hover:bg-indigo-50 hover:text-slate-800 active:bg-indigo-100"
                             >
-                                Adaugare Date ➕
+                                Adauga Date ➕
                             </Button>
                         </div>
                         <div className="flex flex-col items-center gap-1">
