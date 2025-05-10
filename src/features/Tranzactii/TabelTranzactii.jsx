@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge'
 import {
     Table,
     TableBody,
@@ -116,13 +117,12 @@ export default function TabelTranzactii() {
             <Table>
                 <TableHeader>
                     <TableRow className="sticky top-0 bg-white after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-stone-200 after:content-[''] dark:bg-stone-950 dark:after:bg-stone-800 [&>*]:whitespace-nowrap">
-                        <TableHead className="pl-4">Nume</TableHead>
-                        <TableHead>Nevoie</TableHead>
-                        <TableHead>Tip</TableHead>
-                        <TableHead>Cantitate(dorita)</TableHead>
-                        <TableHead>Pret(dorit)</TableHead>
-                        <TableHead>Detalii</TableHead>
-                        <TableHead></TableHead>
+                        <TableHead className="pl-4">id</TableHead>
+                        <TableHead>Vanzator</TableHead>
+                        <TableHead>Cumparator</TableHead>
+                        <TableHead>Cantitate</TableHead>
+                        <TableHead>Pret</TableHead>
+                        <TableHead>Runda</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody className="overflow-hidden">
@@ -133,17 +133,37 @@ export default function TabelTranzactii() {
                         >
                             <TableCell className="pl-4">{product.id}</TableCell>
                             <TableCell className="font-medium">
-                                {product.name}
+                                <Badge className="bg-indigo-600 text-white hover:bg-indigo-700">
+                                    {product.name}
+                                </Badge>
                             </TableCell>
-                            <TableCell>{product.category}</TableCell>
-                            <TableCell>{product.price}</TableCell>
-                            <TableCell>{product.rating}</TableCell>
                             <TableCell>
-                                <span>Detalii Tranzactie</span>
+                                <Badge className="bg-lime-500 text-white hover:bg-lime-600">
+                                    {product.category}
+                                </Badge>
                             </TableCell>
-                            <TableCell className={'flex gap-2'}>
-                                <span>Editare</span>
-                                <span>Detalii</span>
+                            <TableCell>
+                                {/* <Badge className="border border-slate-300 bg-slate-100 text-slate-700">
+                                    {product.price}
+                                </Badge> */}
+
+                                <Badge className="bg-slate-500 text-white hover:bg-slate-600">
+                                    {product.price}
+                                </Badge>
+                            </TableCell>
+                            <TableCell>
+                                {/* <Badge className="border border-slate-300 bg-slate-100 text-slate-700">
+                                    {product.rating}
+                                </Badge> */}
+
+                                <Badge className="bg-slate-500 text-white hover:bg-slate-600">
+                                    {product.rating}
+                                </Badge>
+                            </TableCell>
+                            <TableCell>
+                                <Badge className="border border-slate-300 bg-slate-100 text-slate-700">
+                                    {product.stockQuantity}
+                                </Badge>
                             </TableCell>
                         </TableRow>
                     ))}
