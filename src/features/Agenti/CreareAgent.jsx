@@ -155,6 +155,28 @@ function CreareAgent({ Trigger, agentNumber }) {
                             />
                             <FormField
                                 control={form.control}
+                                name="produs"
+                                render={({ field }) => (
+                                    <FormItem className="col-span-2">
+                                        <FormLabel>
+                                            Selecteaza produsul
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type={'text'}
+                                                placeholder="PR1"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Produsul dorit de agentul tau.
+                                        </FormDescription>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
                                 name="pret"
                                 render={({ field }) => (
                                     <FormItem>
