@@ -30,7 +30,7 @@ function Agenti() {
                     }
                 ></CreareAgent>
             </div>
-            <div className="w">
+            <div className="tabport:grid-cols-4 grid auto-rows-min grid-cols-2 gap-4">
                 <StatisticCard
                     Header={
                         <HeaderStatisticCardAgent
