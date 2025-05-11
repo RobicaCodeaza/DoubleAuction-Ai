@@ -5,9 +5,9 @@ import StatisticCard from '@/ui/StatisticCard'
 import {
     Snail,
     SquareStack,
-    Sigma,
     BetweenVerticalStart,
     DecimalsArrowLeft,
+    Stethoscope,
 } from 'lucide-react'
 
 function Tranzactii() {
@@ -20,7 +20,7 @@ function Tranzactii() {
                 <StatisticCard
                     Header={
                         <HeaderStatisticCardAgent
-                            IconStats={Sigma}
+                            IconStats={Stethoscope}
                             title={'Eficienta Comportamentului'}
                         ></HeaderStatisticCardAgent>
                     }
