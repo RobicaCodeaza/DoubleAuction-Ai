@@ -118,6 +118,7 @@ export default function TabelTranzactii() {
                 <TableHeader>
                     <TableRow className="sticky top-0 bg-white after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-stone-200 after:content-[''] dark:bg-stone-950 dark:after:bg-stone-800 [&>*]:whitespace-nowrap">
                         <TableHead className="pl-4">id</TableHead>
+                        <TableHead>Produs</TableHead>
                         <TableHead>Vanzator</TableHead>
                         <TableHead>Cumparator</TableHead>
                         <TableHead>Cantitate</TableHead>
@@ -132,6 +133,11 @@ export default function TabelTranzactii() {
                             className="odd:bg-stone-100/50 dark:odd:bg-stone-800/50 [&>*]:whitespace-nowrap"
                         >
                             <TableCell className="pl-4">{product.id}</TableCell>
+                            <TableCell className="pl-4">
+                                <Badge className="bg-teal-600 text-white hover:bg-teal-700">
+                                    {product.id}
+                                </Badge>
+                            </TableCell>
                             <TableCell className="font-medium">
                                 <Badge className="bg-indigo-600 text-white hover:bg-indigo-700">
                                     {product.name}
