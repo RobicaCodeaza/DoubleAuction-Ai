@@ -18,14 +18,14 @@ import {
 } from '@/components/ui/chart'
 
 // 🔢 PASUL 1 – date corecte: proporția agenților care tranzacționează în fiecare rundă
-const chartData = [
-    { round: 1, tradeRate: 0.45 },
-    { round: 2, tradeRate: 0.52 },
-    { round: 3, tradeRate: 0.63 },
-    { round: 4, tradeRate: 0.68 },
-    { round: 5, tradeRate: 0.72 },
-    { round: 6, tradeRate: 0.77 },
-]
+// const chartData = [
+//     { round: 1, tradeRate: 0.45 },
+//     { round: 2, tradeRate: 0.52 },
+//     { round: 3, tradeRate: 0.63 },
+//     { round: 4, tradeRate: 0.68 },
+//     { round: 5, tradeRate: 0.72 },
+//     { round: 6, tradeRate: 0.77 },
+// ]
 
 // 🔧 PASUL 2 – configurare grafic
 const chartConfig = {
@@ -35,7 +35,7 @@ const chartConfig = {
     },
 }
 
-export function RataTranzactionare() {
+export function RataTranzactionare({ rataTranzactionare }) {
     return (
         <Card>
             <CardHeader>
@@ -47,12 +47,12 @@ export function RataTranzactionare() {
             </CardHeader>
             <CardContent>
                 <ChartContainer config={chartConfig}>
-                    <BarChart data={chartData} margin={{ top: 20 }}>
+                    <BarChart data={rataTranzactionare} margin={{ top: 20 }}>
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
                         <XAxis
-                            dataKey="round"
+                            dataKey="runda"
                             tickLine={false}
-                            tickMargin={10}
+                            tickMargin={3}
                             axisLine={false}
                             label={{
                                 value: 'Rundă',
@@ -70,27 +70,27 @@ export function RataTranzactionare() {
                                 angle: -90,
                                 position: 'insideLeft',
                             }}
-                            tickFormatter={(val) =>
-                                `${(val * 100).toFixed(0)}%`
-                            }
+                            // tickFormatter={(val) =>
+                            //     `${(val * 100).toFixed(0)}%`
+                            // }
                         />
                         <ChartTooltip
                             cursor={{ fill: 'transparent' }}
                             content={<ChartTooltipContent hideLabel />}
                         />
                         <Bar
-                            dataKey="tradeRate"
+                            dataKey="date"
                             fill="#0d9488" // teal-600
                             radius={8}
                         >
                             <LabelList
-                                dataKey="tradeRate"
+                                dataKey="date"
                                 position="top"
                                 offset={12}
                                 fill="#0d9488"
-                                formatter={(val) =>
-                                    `${(val * 100).toFixed(0)}%`
-                                }
+                                // formatter={(val) =>
+                                //     `${(val * 100).toFixed(0)}%`
+                                // }
                                 fontSize={12}
                             />
                         </Bar>

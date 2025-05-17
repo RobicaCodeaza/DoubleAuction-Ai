@@ -3,7 +3,7 @@ import supabase from './supabase'
 // 1. Obține metricile pentru un model (toate rundele)
 export async function getDashboard(modelId) {
     const { data, error } = await supabase
-        .from('dashboard')
+        .from('Dashboard')
         .select('*')
         .eq('model_id', modelId)
         .order('runda', { ascending: true })
@@ -15,7 +15,7 @@ export async function getDashboard(modelId) {
 // 2. Creează o nouă intrare de metrică
 export async function createDashboardEntry(entry) {
     const { data, error } = await supabase
-        .from('dashboard')
+        .from('Dashboard')
         .insert([entry])
         .select()
         .single()

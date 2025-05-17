@@ -15,7 +15,6 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 import { StepForward, StepBack } from 'lucide-react'
-
 import { Button } from '@/components/ui/button'
 import { Outlet } from 'react-router'
 import Icon from './../ui/Icon'
