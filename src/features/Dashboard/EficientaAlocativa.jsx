@@ -17,14 +17,14 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from '@/components/ui/chart'
-const chartData = [
-    { round: 1, efficiency: 0.72 },
-    { round: 2, efficiency: 0.75 },
-    { round: 3, efficiency: 0.81 },
-    { round: 4, efficiency: 0.78 },
-    { round: 5, efficiency: 0.83 },
-    { round: 6, efficiency: 0.87 },
-]
+// const chartData = [
+//     { round: 1, efficiency: 0.72 },
+//     { round: 2, efficiency: 0.75 },
+//     { round: 3, efficiency: 0.81 },
+//     { round: 4, efficiency: 0.78 },
+//     { round: 5, efficiency: 0.83 },
+//     { round: 6, efficiency: 0.87 },
+// ]
 
 const chartConfig = {
     desktop: {
@@ -37,7 +37,9 @@ const chartConfig = {
     },
 }
 
-export function EficientaAlocativa() {
+export function EficientaAlocativa({ eficientaAlocativa }) {
+    console.log('eficientaAlocativa', eficientaAlocativa)
+
     return (
         <Card>
             <CardHeader>
@@ -51,7 +53,7 @@ export function EficientaAlocativa() {
                 <ChartContainer config={chartConfig}>
                     <AreaChart
                         accessibilityLayer
-                        data={chartData}
+                        data={eficientaAlocativa}
                         margin={{
                             left: -20,
                             right: 12,
@@ -59,10 +61,10 @@ export function EficientaAlocativa() {
                     >
                         <CartesianGrid vertical={false} />
                         <XAxis
-                            dataKey="round"
+                            dataKey="runda"
                             tickLine={false}
                             axisLine={false}
-                            tickMargin={8}
+                            tickMargin={3}
                             label={{
                                 value: 'Rundă',
                                 position: 'insideBottom',
@@ -70,7 +72,7 @@ export function EficientaAlocativa() {
                             }}
                         />
                         <YAxis
-                            domain={[0.6, 1]}
+                            domain={[0.0, 1]}
                             tickLine={false}
                             axisLine={false}
                             tickMargin={8}
@@ -79,16 +81,16 @@ export function EficientaAlocativa() {
                                 angle: -90,
                                 position: 'insideLeft',
                             }}
-                            tickFormatter={(value) =>
-                                `${(value * 100).toFixed(0)}%`
-                            }
+                            // tickFormatter={(value) =>
+                            //     `${(value * 100).toFixed(0)}%`
+                            // }
                         />
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent />}
                         />
                         <Area
-                            dataKey="efficiency"
+                            dataKey="date"
                             type="monotone"
                             fill="#4f46e5"
                             fillOpacity={0.4}

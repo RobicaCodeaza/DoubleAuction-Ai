@@ -18,14 +18,14 @@ import {
 } from '@/components/ui/chart'
 
 // 🔢 PASUL 1 – datele reale (preț real vs preț echilibru)
-const chartData = [
-    { round: 1, realPrice: 42, eqPrice: 45 },
-    { round: 2, realPrice: 47, eqPrice: 48 },
-    { round: 3, realPrice: 51, eqPrice: 50 },
-    { round: 4, realPrice: 49, eqPrice: 50 },
-    { round: 5, realPrice: 52, eqPrice: 51 },
-    { round: 6, realPrice: 54, eqPrice: 52 },
-]
+// const chartData = [
+//     { round: 1, realPrice: 42, eqPrice: 45 },
+//     { round: 2, realPrice: 47, eqPrice: 48 },
+//     { round: 3, realPrice: 51, eqPrice: 50 },
+//     { round: 4, realPrice: 49, eqPrice: 50 },
+//     { round: 5, realPrice: 52, eqPrice: 51 },
+//     { round: 6, realPrice: 54, eqPrice: 52 },
+// ]
 
 // 🔧 PASUL 2 – legendă și culori (violet + blue)
 const chartConfig = {
@@ -39,7 +39,9 @@ const chartConfig = {
     },
 }
 
-export function DifFataDeEchilibru() {
+export function DifFataDeEchilibru({ difFataDeEchilibru }) {
+    console.log('difFataDeEchilibru', difFataDeEchilibru)
+
     return (
         <Card>
             <CardHeader>
@@ -52,15 +54,15 @@ export function DifFataDeEchilibru() {
             <CardContent>
                 <ChartContainer config={chartConfig}>
                     <AreaChart
-                        data={chartData}
+                        data={difFataDeEchilibru}
                         margin={{ left: 12, right: 12 }}
                     >
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
                         <XAxis
-                            dataKey="round"
+                            dataKey="runda"
                             tickLine={false}
                             axisLine={false}
-                            tickMargin={8}
+                            tickMargin={3}
                             label={{
                                 value: 'Rundă',
                                 position: 'insideBottom',
@@ -72,7 +74,7 @@ export function DifFataDeEchilibru() {
                             axisLine={false}
                             tickMargin={8}
                             label={{
-                                value: 'Preț',
+                                value: 'date',
                                 angle: -90,
                                 position: 'insideLeft',
                             }}
@@ -83,7 +85,7 @@ export function DifFataDeEchilibru() {
                         />
 
                         <Area
-                            dataKey="realPrice"
+                            dataKey="date"
                             type="monotone"
                             stroke="#3b82f6"
                             fill="#3b82f6"
@@ -91,7 +93,7 @@ export function DifFataDeEchilibru() {
                             strokeWidth={2}
                         />
                         <Area
-                            dataKey="eqPrice"
+                            dataKey="pretEchilibru"
                             type="monotone"
                             stroke="#8b5cf6"
                             fill="#8b5cf6"

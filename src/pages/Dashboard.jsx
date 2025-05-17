@@ -10,7 +10,46 @@ import {
     HandCoins,
     HeartHandshake,
 } from 'lucide-react'
+import { useDashboards } from '@/features/Dashboard/useGetDashboard'
+import { useModelContext } from '@/context/ContextSimulare'
 function Dashboard() {
+    const { model } = useModelContext()
+    const { dashboard, isLoading } = useDashboards(model)
+
+    if (isLoading) {
+        return (
+            <div className="flex h-full w-full items-center justify-center">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900"></div>
+            </div>
+        )
+    }
+    if (!dashboard)
+        return (
+            <div className="tabland:px-8 flex flex-1 flex-col gap-4 px-4 py-4 pt-0">
+                <div className="mb-4 flex items-center justify-between">
+                    <h2 className="text-lg font-medium">Nu sunt date</h2>
+                </div>
+            </div>
+        )
+
+    console.log('dashboard', dashboard)
+    const eficientaAlocativa = dashboard.map((dashboard) => {
+        return { date: dashboard.eficienta_alocativa, runda: dashboard.runda }
+    })
+    const rataTranzactionare = dashboard.map((dashboard) => {
+        return { date: dashboard.rata_tranzactionare, runda: dashboard.runda }
+    })
+    const volatilitatePreturi = dashboard.map((dashboard) => {
+        return { date: dashboard.volatilitate_pret, runda: dashboard.runda }
+    })
+    const difFataDeEchilibru = dashboard.map((dashboard) => {
+        return {
+            date: dashboard.diferenta_echilibru,
+            runda: dashboard.runda,
+            pretEchilibru: dashboard.pret_echilibru,
+        }
+    })
+
     const Header = <HeaderStatisticCard></HeaderStatisticCard>
 
     return (
@@ -96,10 +135,18 @@ function Dashboard() {
                 ></StatisticCard>
             </div>
             <div className="tabport:grid tabport:grid-cols-2 flex flex-1 flex-col gap-4 rounded-xl bg-slate-50 p-4">
-                <EficientaAlocativa></EficientaAlocativa>
-                <RataTranzactionare></RataTranzactionare>
-                <VolatilitatePreturi></VolatilitatePreturi>
-                <DifFataDeEchilibru></DifFataDeEchilibru>
+                <EficientaAlocativa
+                    eficientaAlocativa={eficientaAlocativa}
+                ></EficientaAlocativa>
+                <RataTranzactionare
+                    rataTranzactionare={rataTranzactionare}
+                ></RataTranzactionare>
+                <VolatilitatePreturi
+                    volatilitatePreturi={volatilitatePreturi}
+                ></VolatilitatePreturi>
+                <DifFataDeEchilibru
+                    difFataDeEchilibru={difFataDeEchilibru}
+                ></DifFataDeEchilibru>
             </div>
         </div>
     )

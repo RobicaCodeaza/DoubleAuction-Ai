@@ -25,14 +25,14 @@ import {
 } from '@/components/ui/chart'
 
 // 🔢 PASUL 1 – date corecte: coeficient de variație (0–1)
-const chartData = [
-    { round: 1, volatility: 0.32 },
-    { round: 2, volatility: 0.28 },
-    { round: 3, volatility: 0.24 },
-    { round: 4, volatility: 0.29 },
-    { round: 5, volatility: 0.22 },
-    { round: 6, volatility: 0.18 },
-]
+// const chartData = [
+//     { round: 1, volatility: 0.32 },
+//     { round: 2, volatility: 0.28 },
+//     { round: 3, volatility: 0.24 },
+//     { round: 4, volatility: 0.29 },
+//     { round: 5, volatility: 0.22 },
+//     { round: 6, volatility: 0.18 },
+// ]
 
 // 🔧 PASUL 2 – legendă/culoare
 const chartConfig = {
@@ -42,7 +42,7 @@ const chartConfig = {
     },
 }
 
-export function VolatilitatePreturi() {
+export function VolatilitatePreturi({ volatilitatePreturi }) {
     return (
         <Card>
             <CardHeader>
@@ -56,15 +56,15 @@ export function VolatilitatePreturi() {
             <CardContent>
                 <ChartContainer config={chartConfig}>
                     <LineChart
-                        data={chartData}
+                        data={volatilitatePreturi}
                         margin={{ top: 20, left: 12, right: 12 }}
                     >
                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
                         <XAxis
-                            dataKey="round"
+                            dataKey="runda"
                             tickLine={false}
                             axisLine={false}
-                            tickMargin={8}
+                            tickMargin={3}
                             label={{
                                 value: 'Rundă',
                                 position: 'insideBottom',
@@ -88,7 +88,7 @@ export function VolatilitatePreturi() {
                             content={<ChartTooltipContent indicator="line" />}
                         />
                         <Line
-                            dataKey="volatility"
+                            dataKey="date"
                             type="monotone"
                             stroke="#f59e0b"
                             strokeWidth={2}
@@ -96,7 +96,7 @@ export function VolatilitatePreturi() {
                             activeDot={{ r: 6 }}
                         >
                             <LabelList
-                                dataKey="volatility"
+                                dataKey="date"
                                 position="top"
                                 offset={12}
                                 fill="#f59e0b"
