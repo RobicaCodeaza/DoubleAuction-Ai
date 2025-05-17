@@ -21,14 +21,39 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
+import { useCreateModel } from './useCreateModel'
+import toast from 'react-hot-toast'
 
 function CreateModel({ Trigger }) {
+    const { isCreating, createModel } = useCreateModel()
     const form = useForm()
-    console.log('CreateModel', Trigger)
-    function onSubmit(values) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    // const { register, handleSubmit, reset, getValues, formState } = form
+    const { handleSubmit, reset } = form
+    // const { errors } = formState
+
+    function onSubmit(data) {
+        const cleanData = {
+            nume: data.Nume,
+            numar_agenti: parseInt(data.agentAlgoritmSimplu),
+            ordine_ag_ml: parseInt(data.agentComportamentAdaptiv),
+            ordine_ag_fuzzy: parseInt(data.agentFuzzy),
+            ordine_ag_adap: parseInt(data.numarAgenti),
+        }
+        createModel(
+            { ...cleanData },
+            {
+                onSuccess: (data) => {
+                    console.log(data)
+                    reset()
+                },
+            }
+        )
+        console.log(cleanData)
+    }
+
+    function onError(errors) {
+        console.log(errors)
+        toast.error('Check your form inputs')
     }
 
     return (
@@ -47,12 +72,13 @@ function CreateModel({ Trigger }) {
 
                     <Form {...form}>
                         <form
-                            onSubmit={form.handleSubmit(onSubmit)}
+                            onSubmit={handleSubmit(onSubmit, onError)}
                             className="w-full space-y-8"
                         >
                             <FormField
                                 control={form.control}
                                 name="Nume"
+                                disabled={isCreating}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Nume</FormLabel>
@@ -72,6 +98,7 @@ function CreateModel({ Trigger }) {
                             <FormField
                                 control={form.control}
                                 name="numarAgenti"
+                                disabled={isCreating}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Numar Agenti</FormLabel>
@@ -91,6 +118,7 @@ function CreateModel({ Trigger }) {
                             <FormField
                                 control={form.control}
                                 name="agentFuzzy"
+                                disabled={isCreating}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Agent - Fuzzy</FormLabel>
@@ -110,6 +138,7 @@ function CreateModel({ Trigger }) {
                             />
                             <FormField
                                 control={form.control}
+                                disabled={isCreating}
                                 name="agentAlgoritmSimplu"
                                 render={({ field }) => (
                                     <FormItem>
@@ -132,6 +161,7 @@ function CreateModel({ Trigger }) {
                             />
                             <FormField
                                 control={form.control}
+                                disabled={isCreating}
                                 name="agentComportamentAdaptiv"
                                 render={({ field }) => (
                                     <FormItem>
@@ -152,14 +182,16 @@ function CreateModel({ Trigger }) {
                                     </FormItem>
                                 )}
                             />
-                            <Button
-                                type="submit"
-                                className={
-                                    'w-full bg-indigo-500 text-white hover:bg-indigo-600 active:bg-indigo-700'
-                                }
-                            >
-                                Creare Model
-                            </Button>
+                            <DrawerClose asChild>
+                                <Button
+                                    type="submit"
+                                    className={
+                                        'w-full bg-indigo-500 text-white hover:bg-indigo-600 active:bg-indigo-700'
+                                    }
+                                >
+                                    Creare Model
+                                </Button>
+                            </DrawerClose>
                         </form>
                     </Form>
                     {/* <DrawerFooter>

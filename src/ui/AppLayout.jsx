@@ -28,8 +28,11 @@ import { Button } from '@/components/ui/button'
 import { Outlet } from 'react-router'
 import Icon from './../ui/Icon'
 import CreateModel from '@/features/Model/CreateModel'
+import { useModels } from '@/features/Model/useGetModels'
 
 export default function AppLayout() {
+    const { models } = useModels()
+    console.log('models', models)
     return (
         <SidebarProvider>
             <AppSidebar />
@@ -45,24 +48,21 @@ export default function AppLayout() {
                     <div className="flex flex-1 items-center justify-between">
                         <Select className="w-24">
                             <SelectTrigger className="phone:w-[180px] w-[100px]">
-                                <SelectValue placeholder="Select a fruit" />
+                                <SelectValue placeholder="Selecteaza un model" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectLabel>Fruits</SelectLabel>
-                                    <SelectItem value="apple">Apple</SelectItem>
-                                    <SelectItem value="banana">
-                                        Banana
-                                    </SelectItem>
-                                    <SelectItem value="blueberry">
-                                        Blueberry
-                                    </SelectItem>
-                                    <SelectItem value="grapes">
-                                        Grapes
-                                    </SelectItem>
-                                    <SelectItem value="pineapple">
-                                        Pineapple
-                                    </SelectItem>
+                                    <SelectGroup>
+                                        <SelectLabel>Modele</SelectLabel>
+                                        {models?.map((model) => (
+                                            <SelectItem
+                                                key={model.id}
+                                                value={model.id.toString()}
+                                            >
+                                                {model.nume}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
