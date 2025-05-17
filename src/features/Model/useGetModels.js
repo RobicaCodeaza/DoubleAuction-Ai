@@ -1,5 +1,4 @@
 import { getModels } from '@/services/apiModel'
-
 import { useQuery } from '@tanstack/react-query'
 
 export function useModels() {

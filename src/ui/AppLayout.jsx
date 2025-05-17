@@ -29,10 +29,12 @@ import { Outlet } from 'react-router'
 import Icon from './../ui/Icon'
 import CreateModel from '@/features/Model/CreateModel'
 import { useModels } from '@/features/Model/useGetModels'
+import { useModelContext } from '@/context/ContextSimulare'
 
 export default function AppLayout() {
     const { models } = useModels()
-    console.log('models', models)
+    const { model, selecteazaModel } = useModelContext()
+
     return (
         <SidebarProvider>
             <AppSidebar />
@@ -46,7 +48,13 @@ export default function AppLayout() {
                         />
                     </div>
                     <div className="flex flex-1 items-center justify-between">
-                        <Select className="w-24">
+                        <Select
+                            className="w-24"
+                            value={model?.id.toString()}
+                            onValueChange={(val) =>
+                                selecteazaModel(Number(val))
+                            }
+                        >
                             <SelectTrigger className="phone:w-[180px] w-[100px]">
                                 <SelectValue placeholder="Selecteaza un model" />
                             </SelectTrigger>
