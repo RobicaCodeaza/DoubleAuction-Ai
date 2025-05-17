@@ -2,7 +2,7 @@ import supabase from './supabase'
 
 // 1. Obține toate modelele
 export async function getModels() {
-    const { data, error } = await supabase.from('model').select('*')
+    const { data, error } = await supabase.from('Model').select('*')
     if (error) throw new Error('Nu s-au putut încărca modelele')
     return data
 }
@@ -10,7 +10,7 @@ export async function getModels() {
 // 2. Obține un singur model după ID
 export async function getModel(id) {
     const { data, error } = await supabase
-        .from('model')
+        .from('Model')
         .select('*')
         .eq('id', id)
         .single()
@@ -21,7 +21,7 @@ export async function getModel(id) {
 // 3. Creează un model nou
 export async function createModel(nouModel) {
     const { data, error } = await supabase
-        .from('model')
+        .from('Model')
         .insert([nouModel])
         .select()
         .single()
@@ -32,7 +32,7 @@ export async function createModel(nouModel) {
 // 4. Actualizează un model
 export async function updateModel(id, campuriActualizate) {
     const { data, error } = await supabase
-        .from('model')
+        .from('Model')
         .update(campuriActualizate)
         .eq('id', id)
         .select()
@@ -43,7 +43,7 @@ export async function updateModel(id, campuriActualizate) {
 
 // 5. Șterge un model
 export async function deleteModel(id) {
-    const { data, error } = await supabase.from('model').delete().eq('id', id)
+    const { data, error } = await supabase.from('Model').delete().eq('id', id)
     if (error) throw new Error('Modelul nu a putut fi șters')
     return data
 }
