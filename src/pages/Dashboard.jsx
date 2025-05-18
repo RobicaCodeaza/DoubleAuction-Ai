@@ -32,7 +32,7 @@ function Dashboard() {
             </div>
         )
 
-    console.log('dashboard', dashboard)
+    // console.log('dashboard', dashboard)
     const eficientaAlocativa = dashboard.map((dashboard) => {
         return { date: dashboard.eficienta_alocativa, runda: dashboard.runda }
     })

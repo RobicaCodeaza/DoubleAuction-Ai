@@ -11,7 +11,7 @@ function ContextSimulareProvider({ children }) {
         if (!isLoading && models) {
             // Dacă nu există un model selectat, setăm primul model ca fiind selectat
             setModel(models[0])
-            console.log('modele', models)
+            // console.log('modele', models)
         }
     }, [models, isLoading])
 

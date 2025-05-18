@@ -491,7 +491,6 @@ function SidebarMenuButton({
         ? className +
           `${isActiveLocation ? 'bg-indigo-500 text-accent-foreground' : 'hover:bg-indigo-400 hover:text-indigo-100'}`
         : `${isActiveLocation ? 'bg-indigo-500 text-indigo-100' : 'hover:bg-stone-200 hover:text-indigo-500'}`
-    console.log(classNameAdded)
 
     const button = (
         <Comp

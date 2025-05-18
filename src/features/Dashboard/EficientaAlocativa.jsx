@@ -38,7 +38,7 @@ const chartConfig = {
 }
 
 export function EficientaAlocativa({ eficientaAlocativa }) {
-    console.log('eficientaAlocativa', eficientaAlocativa)
+    // console.log('eficientaAlocativa', eficientaAlocativa)
 
     return (
         <Card>

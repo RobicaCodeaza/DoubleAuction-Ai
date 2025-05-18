@@ -48,7 +48,7 @@ function CreateModel({ Trigger }) {
                 },
             }
         )
-        console.log(cleanData)
+        // console.log(cleanData)
     }
 
     function onError(errors) {
@@ -58,17 +58,15 @@ function CreateModel({ Trigger }) {
 
     return (
         <Drawer>
-            <DrawerTrigger asChild>
-                <span className="flex">{Trigger}</span>
-            </DrawerTrigger>
+            <DrawerTrigger asChild>{Trigger}</DrawerTrigger>
             <DrawerContent className="bg-slate-50">
                 <div className="mx-auto my-10 w-full max-w-max rounded-md border border-indigo-100 bg-white px-24 py-6 shadow-lg ring-1 shadow-indigo-900/5 ring-indigo-900/10">
-                    {/* <DrawerHeader>
-                        <DrawerTitle>Move Goal</DrawerTitle>
+                    <DrawerHeader>
+                        <DrawerTitle>Adauga model</DrawerTitle>
                         <DrawerDescription>
-                            Set your daily activity goal.
+                            {/* Set your daily activity goal. */}
                         </DrawerDescription>
-                    </DrawerHeader> */}
+                    </DrawerHeader>
 
                     <Form {...form}>
                         <form
@@ -78,12 +76,12 @@ function CreateModel({ Trigger }) {
                             <FormField
                                 control={form.control}
                                 name="Nume"
-                                disabled={isCreating}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Nume</FormLabel>
                                         <FormControl>
                                             <Input
+                                                disabled={isCreating}
                                                 placeholder="shadcn"
                                                 {...field}
                                             />
@@ -98,12 +96,12 @@ function CreateModel({ Trigger }) {
                             <FormField
                                 control={form.control}
                                 name="numarAgenti"
-                                disabled={isCreating}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Numar Agenti</FormLabel>
                                         <FormControl>
                                             <Input
+                                                disabled={isCreating}
                                                 placeholder="shadcn"
                                                 {...field}
                                             />
@@ -118,12 +116,12 @@ function CreateModel({ Trigger }) {
                             <FormField
                                 control={form.control}
                                 name="agentFuzzy"
-                                disabled={isCreating}
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Agent - Fuzzy</FormLabel>
                                         <FormControl>
                                             <Input
+                                                disabled={isCreating}
                                                 placeholder="shadcn"
                                                 type={'number'}
                                                 {...field}
@@ -138,7 +136,6 @@ function CreateModel({ Trigger }) {
                             />
                             <FormField
                                 control={form.control}
-                                disabled={isCreating}
                                 name="agentAlgoritmSimplu"
                                 render={({ field }) => (
                                     <FormItem>
@@ -148,6 +145,7 @@ function CreateModel({ Trigger }) {
                                         <FormControl>
                                             <Input
                                                 placeholder="shadcn"
+                                                disabled={isCreating}
                                                 type={'number'}
                                                 {...field}
                                             />
@@ -161,7 +159,6 @@ function CreateModel({ Trigger }) {
                             />
                             <FormField
                                 control={form.control}
-                                disabled={isCreating}
                                 name="agentComportamentAdaptiv"
                                 render={({ field }) => (
                                     <FormItem>
@@ -171,6 +168,7 @@ function CreateModel({ Trigger }) {
                                         <FormControl>
                                             <Input
                                                 type={'number'}
+                                                disabled={isCreating}
                                                 placeholder="shadcn"
                                                 {...field}
                                             />

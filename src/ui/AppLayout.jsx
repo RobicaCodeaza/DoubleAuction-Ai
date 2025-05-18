@@ -24,7 +24,7 @@ import { useModelContext } from '@/context/ContextSimulare'
 
 export default function AppLayout() {
     const { models } = useModels()
-    const { model, selecteazaModel } = useModelContext()
+    const { model, selecteazaModel, etapa, etapaUrmatoare } = useModelContext()
 
     return (
         <SidebarProvider>
@@ -41,7 +41,7 @@ export default function AppLayout() {
                     <div className="flex flex-1 items-center justify-between">
                         <Select
                             className="w-24"
-                            value={model?.id.toString()}
+                            value={model?.id.toString() ?? ''}
                             onValueChange={(val) =>
                                 selecteazaModel(Number(val))
                             }
@@ -88,20 +88,22 @@ export default function AppLayout() {
                                 Etapa simulare
                             </span>
 
-                            <div className="flex gap-1">
-                                <Button
+                            <div className="flex items-center gap-2">
+                                {/* <Button
                                     size="sm"
                                     className="bg-indigo-200 text-indigo-800 hover:bg-indigo-300 active:bg-indigo-400"
                                 >
                                     <Icon>
                                         <StepBack></StepBack>
                                     </Icon>
-                                </Button>
+                                </Button> */}
+                                <div>{etapa}</div>
                                 <Button
                                     size="sm"
                                     className={
                                         'bg-indigo-200 text-indigo-800 hover:bg-indigo-300 active:bg-indigo-400'
                                     }
+                                    onClick={etapaUrmatoare}
                                 >
                                     <Icon>
                                         <StepForward></StepForward>

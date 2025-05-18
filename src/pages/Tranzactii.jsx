@@ -9,8 +9,21 @@ import {
     DecimalsArrowLeft,
     Stethoscope,
 } from 'lucide-react'
+import { useTransactions } from '@/features/Tranzactii/useGetTranzactii'
+import Empty from '@/ui/Empty'
 
 function Tranzactii() {
+    const { isLoading, transactions } = useTransactions()
+
+    if (isLoading) {
+        return (
+            <div className="flex h-full w-full items-center justify-center">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900"></div>
+            </div>
+        )
+    }
+    if (!transactions) return <Empty resource="tranzactii" />
+
     return (
         <div className="tabland:px-8 flex flex-1 flex-col gap-4 px-4 py-4 pt-0">
             <div className="mb-4 flex items-center justify-between">
@@ -90,7 +103,7 @@ function Tranzactii() {
                     }
                 ></StatisticCard>
             </div>
-            <TabelTranzactii></TabelTranzactii>
+            <TabelTranzactii transactions={transactions}></TabelTranzactii>
         </div>
     )
 }
