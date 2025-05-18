@@ -11,9 +11,11 @@ import {
 } from 'lucide-react'
 import { useTransactions } from '@/features/Tranzactii/useGetTranzactii'
 import Empty from '@/ui/Empty'
+import { useModelContext } from '@/context/ContextSimulare'
 
 function Tranzactii() {
-    const { isLoading, transactions } = useTransactions()
+    const { model } = useModelContext()
+    const { isLoading, transactions } = useTransactions(model)
 
     if (isLoading) {
         return (

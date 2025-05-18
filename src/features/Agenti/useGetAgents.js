@@ -7,7 +7,7 @@ export function useAgents(model) {
         data: agents,
         error,
     } = useQuery({
-        queryKey: ['agents'],
+        queryKey: ['agents', model?.id],
         queryFn: () => getAgenti(model?.id),
         enabled: !!model?.id, // Only run the query if user_id exists
     })
