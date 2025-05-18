@@ -11,31 +11,42 @@ import {
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 
-export function DetaliiAgent() {
+export function DetaliiAgent({
+    nume,
+    comportament,
+    ascultaTrend,
+    invataIstoric,
+    prioritate,
+}) {
     const agent = {
-        nume: 'Agent 7',
-        comportament: 'Agresiv',
-        ascultaTrend: 'Ridicat',
-        invataIstoric: 'Da',
-        prioritate: 'Preț',
+        nume,
+        comportament,
+        ascultaTrend,
+        invataIstoric,
+        prioritate,
     }
+    console.log('agent', agent)
 
     const badgeColor = (key, value) => {
         switch (key) {
             case 'comportament':
                 return value === 'Agresiv' ? 'destructive' : 'secondary'
-            case 'ascultaTrend':
-                return value === 'Ridicat' ? 'cyan' : 'muted'
+            case 'ascultaTrend': {
+                console.log('ascultaTrend', value === true, value)
+                return value === true ? 'cyan' : 'muted'
+            }
             case 'invataIstoric':
-                return value === 'Da' ? 'violet' : 'outline'
+                return value === 'true' ? 'violet' : 'outline'
             case 'prioritate':
-                return value === 'Preț'
+                return value === 'pret'
                     ? 'indigo'
-                    : value === 'Cantitate'
+                    : value === 'cantitate'
                       ? 'lime'
                       : 'rose'
-            default:
+            default: {
+                console.log('badgeColor', key, value)
                 return 'default'
+            }
         }
     }
 
@@ -69,7 +80,11 @@ export function DetaliiAgent() {
                                 variant={badgeColor(key, value)}
                                 className="px-3 py-1 text-sm"
                             >
-                                {value}
+                                {value === true
+                                    ? 'Da'
+                                    : value === false
+                                      ? 'Nu'
+                                      : value}
                             </Badge>
                         </div>
                     ))}

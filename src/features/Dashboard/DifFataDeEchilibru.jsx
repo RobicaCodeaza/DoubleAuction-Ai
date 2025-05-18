@@ -40,7 +40,7 @@ const chartConfig = {
 }
 
 export function DifFataDeEchilibru({ difFataDeEchilibru }) {
-    console.log('difFataDeEchilibru', difFataDeEchilibru)
+    // console.log('difFataDeEchilibru', difFataDeEchilibru)
 
     return (
         <Card>

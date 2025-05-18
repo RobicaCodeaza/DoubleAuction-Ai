@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import {
     Drawer,
+    DrawerClose,
     // DrawerClose,
     DrawerContent,
     // DrawerDescription,
@@ -30,16 +31,48 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 import { useForm } from 'react-hook-form'
+import { useCreateAgent } from './useCreateAgent'
+import toast from 'react-hot-toast'
+import { useModelContext } from '@/context/ContextSimulare'
 
 function CreareAgent({ Trigger, agentNumber }) {
+    const { model } = useModelContext()
+    const { isCreating, createAgent } = useCreateAgent()
     const form = useForm()
-    console.log('CreareAgent', Trigger)
-    function onSubmit(values) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    // const { register, handleSubmit, reset, getValues, formState } = form
+    const { handleSubmit, reset } = form
+    // const { errors } = formState
+
+    function onSubmit(data) {
+        console.log(data)
+        const cleanData = {
+            nume: '1' + data.tipAgentAi,
+            model_id: model.id,
+            tip: data.tipAgentAi,
+            rol: data.tipAgentPiata,
+            produs: data.produs,
+            pret: Number(data.pret),
+            cantitate: Number(data.cantitate),
+            prioritate: data.prioritate,
+            comportament: data.comportament,
+            sensibil_la_trend: data.sensibilitateTrend === 'da' ? true : false,
+            memorie_istoric: data.considerareIstoric === 'da' ? true : false,
+        }
+        createAgent(
+            { ...cleanData },
+            {
+                onSuccess: (data) => {
+                    console.log(data)
+                    reset()
+                },
+            }
+        )
     }
 
+    function onError(errors) {
+        console.log(errors)
+        toast.error('Check your form inputs')
+    }
     return (
         <Drawer className="">
             <DrawerTrigger asChild>
@@ -62,7 +95,7 @@ function CreareAgent({ Trigger, agentNumber }) {
 
                     <Form {...form}>
                         <form
-                            onSubmit={form.handleSubmit(onSubmit)}
+                            onSubmit={handleSubmit(onSubmit, onError)}
                             className="tabland:gap-10 phone:gap-8 phone:grid flex w-full grid-cols-2 flex-col gap-6"
                         >
                             <FormField
@@ -74,41 +107,43 @@ function CreareAgent({ Trigger, agentNumber }) {
                                         <FormLabel>
                                             Selecteaza agent(AI)
                                         </FormLabel>
-                                        <FormControl>
-                                            {/* <Input
+                                        {/* <Input
                                                 placeholder="shadcn"
                                                 type={'select'}
                                                 {...field}
                                             /> */}
-                                            <Select
-                                                value={field.value}
-                                                onValueChange={field.onChange}
-                                            >
+                                        <Select
+                                            value={field.value ?? ''}
+                                            disabled={isCreating}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <FormControl>
                                                 <SelectTrigger className="w-[180px]">
                                                     <SelectValue placeholder="Tip agent AI" />
                                                 </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectGroup>
-                                                        <SelectLabel>
-                                                            AI
-                                                        </SelectLabel>
-                                                        <SelectItem value="llm">
-                                                            LLM
-                                                        </SelectItem>
-                                                        <SelectItem value="fuzzy">
-                                                            Fuzzy
-                                                        </SelectItem>
-                                                        <SelectItem value="comportamentAdaptiv">
-                                                            Comportament Adaptiv
-                                                        </SelectItem>
-                                                        <SelectItem value="algoritmSimplu">
-                                                            Algoritmul simplu de
-                                                            invatare
-                                                        </SelectItem>
-                                                    </SelectGroup>
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
+                                            </FormControl>
+
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>
+                                                        AI
+                                                    </SelectLabel>
+                                                    <SelectItem value="llm">
+                                                        LLM
+                                                    </SelectItem>
+                                                    <SelectItem value="fuzzy">
+                                                        Fuzzy
+                                                    </SelectItem>
+                                                    <SelectItem value="comportamentAdaptiv">
+                                                        Comportament Adaptiv
+                                                    </SelectItem>
+                                                    <SelectItem value="algoritmSimplu">
+                                                        Algoritmul simplu de
+                                                        invatare
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
                                         <FormDescription>
                                             Tipul de agent pe care il
                                             doresti(AI).
@@ -125,26 +160,28 @@ function CreareAgent({ Trigger, agentNumber }) {
                                         <FormLabel>
                                             Selecteaza Agent(piata)
                                         </FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                value={field.value}
-                                                onValueChange={field.onChange}
-                                            >
+                                        <Select
+                                            value={field.value ?? ''}
+                                            onValueChange={field.onChange}
+                                            disabled={isCreating}
+                                        >
+                                            <FormControl>
                                                 <SelectTrigger className="w-[180px]">
                                                     <SelectValue placeholder="Tip agent" />
                                                 </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectGroup>
-                                                        <SelectItem value="vanzator">
-                                                            Vanzator
-                                                        </SelectItem>
-                                                        <SelectItem value="cumparator">
-                                                            Cumparator
-                                                        </SelectItem>
-                                                    </SelectGroup>
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
+                                            </FormControl>
+
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="vanzator">
+                                                        Vanzator
+                                                    </SelectItem>
+                                                    <SelectItem value="cumparator">
+                                                        Cumparator
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
                                         <FormDescription>
                                             Tipul de agent pe care il
                                             doresti(piata).
@@ -166,6 +203,8 @@ function CreareAgent({ Trigger, agentNumber }) {
                                                 type={'text'}
                                                 placeholder="PR1"
                                                 {...field}
+                                                value={field.value ?? ''}
+                                                disabled={isCreating}
                                             />
                                         </FormControl>
                                         <FormDescription>
@@ -188,6 +227,7 @@ function CreareAgent({ Trigger, agentNumber }) {
                                                 type={'number'}
                                                 placeholder="50"
                                                 {...field}
+                                                disabled={isCreating}
                                             />
                                         </FormControl>
                                         <FormDescription>
@@ -210,6 +250,8 @@ function CreareAgent({ Trigger, agentNumber }) {
                                                 type={'number'}
                                                 placeholder="10"
                                                 {...field}
+                                                disabled={isCreating}
+                                                value={field.value ?? ''}
                                             />
                                         </FormControl>
                                         <FormDescription>
@@ -227,26 +269,28 @@ function CreareAgent({ Trigger, agentNumber }) {
                                         <FormLabel>
                                             Sensibilitatea la trend
                                         </FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                value={field.value}
-                                                onValueChange={field.onChange}
-                                            >
+                                        <Select
+                                            value={field.value ?? ''}
+                                            disabled={isCreating}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <FormControl>
                                                 <SelectTrigger className="w-[180px]">
                                                     <SelectValue placeholder="Tip sensibilitate" />
                                                 </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectGroup>
-                                                        <SelectItem value="da">
-                                                            Da
-                                                        </SelectItem>
-                                                        <SelectItem value="nu">
-                                                            Nu
-                                                        </SelectItem>
-                                                    </SelectGroup>
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
+                                            </FormControl>
+
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="da">
+                                                        Da
+                                                    </SelectItem>
+                                                    <SelectItem value="nu">
+                                                        Nu
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
                                         <FormDescription>
                                             Sensibilitatea agentului tau la
                                             trendul pietei.
@@ -263,26 +307,28 @@ function CreareAgent({ Trigger, agentNumber }) {
                                         <FormLabel>
                                             Ia in considerare istoricul
                                         </FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                value={field.value}
-                                                onValueChange={field.onChange}
-                                            >
+                                        <Select
+                                            value={field.value ?? ''}
+                                            disabled={isCreating}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <FormControl>
                                                 <SelectTrigger className="w-[180px]">
                                                     <SelectValue placeholder="Considerare istoric" />
                                                 </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectGroup>
-                                                        <SelectItem value="da">
-                                                            Da
-                                                        </SelectItem>
-                                                        <SelectItem value="nu">
-                                                            Nu
-                                                        </SelectItem>
-                                                    </SelectGroup>
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
+                                            </FormControl>
+
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="da">
+                                                        Da
+                                                    </SelectItem>
+                                                    <SelectItem value="nu">
+                                                        Nu
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
                                         <FormDescription>
                                             Agentul tau va lua sau nu in
                                             considerare istoricul pietei.
@@ -297,26 +343,28 @@ function CreareAgent({ Trigger, agentNumber }) {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Tip comportament</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                value={field.value}
-                                                onValueChange={field.onChange}
-                                            >
+                                        <Select
+                                            value={field.value ?? ''}
+                                            disabled={isCreating}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <FormControl>
                                                 <SelectTrigger className="w-[180px]">
                                                     <SelectValue placeholder="Comportamentul agentului" />
                                                 </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectGroup>
-                                                        <SelectItem value="pasiv">
-                                                            Pasiv
-                                                        </SelectItem>
-                                                        <SelectItem value="agresiv">
-                                                            Agresiv
-                                                        </SelectItem>
-                                                    </SelectGroup>
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
+                                            </FormControl>
+
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="pasiv">
+                                                        Pasiv
+                                                    </SelectItem>
+                                                    <SelectItem value="agresiv">
+                                                        Agresiv
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
                                         <FormDescription>
                                             Comportamentul agentului tau.
                                         </FormDescription>
@@ -326,33 +374,35 @@ function CreareAgent({ Trigger, agentNumber }) {
                             />
                             <FormField
                                 control={form.control}
-                                name="comportament"
+                                name="prioritate"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Prioritate agent</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                value={field.value}
-                                                onValueChange={field.onChange}
-                                            >
+
+                                        <Select
+                                            value={field.value ?? ''}
+                                            disabled={isCreating}
+                                            onValueChange={field.onChange}
+                                        >
+                                            <FormControl>
                                                 <SelectTrigger className="w-[180px]">
                                                     <SelectValue placeholder="Prioritate" />
                                                 </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectGroup>
-                                                        <SelectItem value="pret">
-                                                            Pret
-                                                        </SelectItem>
-                                                        <SelectItem value="cantitate">
-                                                            Cantitate
-                                                        </SelectItem>
-                                                        <SelectItem value="agresiv">
-                                                            Viteza
-                                                        </SelectItem>
-                                                    </SelectGroup>
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectItem value="pret">
+                                                        Pret
+                                                    </SelectItem>
+                                                    <SelectItem value="cantitate">
+                                                        Cantitate
+                                                    </SelectItem>
+                                                    <SelectItem value="agresiv">
+                                                        Viteza
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
                                         <FormDescription>
                                             Prioritatea agentului tau in piata.
                                         </FormDescription>
@@ -360,14 +410,16 @@ function CreareAgent({ Trigger, agentNumber }) {
                                     </FormItem>
                                 )}
                             />
-                            <Button
-                                type="submit"
-                                className={
-                                    'col-span-2 w-full bg-indigo-500 text-white hover:bg-indigo-600 active:bg-indigo-700'
-                                }
-                            >
-                                Creare Model
-                            </Button>
+                            <DrawerClose asChild>
+                                <Button
+                                    type="submit"
+                                    className={
+                                        'col-span-2 w-full bg-indigo-500 text-white hover:bg-indigo-600 active:bg-indigo-700'
+                                    }
+                                >
+                                    Creare Model
+                                </Button>
+                            </DrawerClose>
                         </form>
                     </Form>
                     {/* <DrawerFooter>
