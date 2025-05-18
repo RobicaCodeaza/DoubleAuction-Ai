@@ -7,7 +7,7 @@ export function useDashboards(model) {
         data: dashboard,
         error,
     } = useQuery({
-        queryKey: ['dashboard'],
+        queryKey: ['dashboard', model?.id],
         queryFn: () => getDashboard(model?.id),
         enabled: !!model?.id, // Only run the query if user_id exists
     })
