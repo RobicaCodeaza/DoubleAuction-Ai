@@ -30,13 +30,15 @@ export function DetaliiAgent({
     const badgeColor = (key, value) => {
         switch (key) {
             case 'comportament':
-                return value === 'Agresiv' ? 'destructive' : 'secondary'
+                return value === 'agresiv' ? 'destructive' : 'secondary'
             case 'ascultaTrend': {
                 console.log('ascultaTrend', value === true, value)
                 return value === true ? 'cyan' : 'muted'
             }
-            case 'invataIstoric':
-                return value === 'true' ? 'violet' : 'outline'
+            case 'invataIstoric': {
+                console.log('ascultaTrend', value === true, value)
+                return value === true ? 'violet' : 'outline'
+            }
             case 'prioritate':
                 return value === 'pret'
                     ? 'indigo'
@@ -44,7 +46,6 @@ export function DetaliiAgent({
                       ? 'lime'
                       : 'rose'
             default: {
-                console.log('badgeColor', key, value)
                 return 'default'
             }
         }

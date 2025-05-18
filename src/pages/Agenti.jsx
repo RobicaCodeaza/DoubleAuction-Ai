@@ -19,6 +19,15 @@ function Agenti() {
     const { model } = useModelContext()
     const { isLoading, agents } = useAgents(model)
 
+    // const reportIstoricOrientant = agents.reduce(
+    //     (acc, agent) => {
+    //         if (agent.memorie_istoric === true) acc.orientant += 1
+    //         if (agent.memorie_istoric === false) acc.neorientant += 1
+    //         return acc
+    //     },
+    //     { orientat: 0, neorientat: 0 }
+    // )
+
     if (isLoading) {
         return (
             <div className="flex h-full w-full items-center justify-center">
@@ -46,6 +55,40 @@ function Agenti() {
                 }
             />
         )
+
+    const reportVzCump = agents.reduce(
+        (acc, agent) => {
+            if (agent.rol === 'vanzator') acc.vz += 1
+            if (agent.rol === 'cumparator') acc.cump += 1
+            return acc
+        },
+        { vz: 0, cump: 0 }
+    )
+    const reportPasivAgresiv = agents.reduce(
+        (acc, agent) => {
+            if (agent.comportament === 'pasiv') acc.pasiv += 1
+            if (agent.comportament === 'agresiv') acc.agresiv += 1
+            return acc
+        },
+        { pasiv: 0, agresiv: 0 }
+    )
+    const reportSensibilLaTrend = agents.reduce(
+        (acc, agent) => {
+            if (agent.sensibil_la_trend === true) acc.sensibil += 1
+            if (agent.sensibil_la_trend === false) acc.insensibil += 1
+            return acc
+        },
+        { sensibil: 0, insensibil: 0 }
+    )
+
+    const reportIstoricOrientant = agents.reduce(
+        (acc, agent) => {
+            if (agent.memorie_istoric === true) acc.orientat += 1
+            if (agent.memorie_istoric === false) acc.neorientat += 1
+            return acc
+        },
+        { orientat: 0, neorientat: 0 }
+    )
 
     return (
         <div className="tabland:px-8 flex flex-1 flex-col gap-4 px-4 py-4 pt-0">
@@ -77,8 +120,8 @@ function Agenti() {
                             Content={
                                 <ContentStatisticCardAgent
                                     IconStats={SquareSplitHorizontal}
-                                    stat1={7}
-                                    stat2={3}
+                                    stat1={reportVzCump.vz}
+                                    stat2={reportVzCump.cump}
                                 ></ContentStatisticCardAgent>
                             }
                         ></StatisticCard>
@@ -92,8 +135,8 @@ function Agenti() {
                             Content={
                                 <ContentStatisticCardAgent
                                     IconStats={SquareSplitHorizontal}
-                                    stat1={7}
-                                    stat2={3}
+                                    stat1={reportPasivAgresiv.pasiv}
+                                    stat2={reportPasivAgresiv.agresiv}
                                 ></ContentStatisticCardAgent>
                             }
                         ></StatisticCard>
@@ -107,8 +150,8 @@ function Agenti() {
                             Content={
                                 <ContentStatisticCardAgent
                                     IconStats={SquareSplitHorizontal}
-                                    stat1={7}
-                                    stat2={3}
+                                    stat1={reportSensibilLaTrend.sensibil}
+                                    stat2={reportSensibilLaTrend.insensibil}
                                 ></ContentStatisticCardAgent>
                             }
                         ></StatisticCard>
@@ -116,14 +159,14 @@ function Agenti() {
                             Header={
                                 <HeaderStatisticCardAgent
                                     IconStats={SquareStack}
-                                    title={'Istoric Orientant/Neorientant'}
+                                    title={'Istoric Orientat/Neorientat'}
                                 ></HeaderStatisticCardAgent>
                             }
                             Content={
                                 <ContentStatisticCardAgent
                                     IconStats={SquareSplitHorizontal}
-                                    stat1={7}
-                                    stat2={3}
+                                    stat1={reportIstoricOrientant.orientat}
+                                    stat2={reportIstoricOrientant.neorientat}
                                 ></ContentStatisticCardAgent>
                             }
                         ></StatisticCard>
