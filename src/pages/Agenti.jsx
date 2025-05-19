@@ -171,7 +171,7 @@ function Agenti() {
                             }
                         ></StatisticCard>
                     </div>
-                    <TableAgenti agents={agents}></TableAgenti>
+                    <TableAgenti agents={agents} model={model}></TableAgenti>
                 </>
             )}
         </div>
