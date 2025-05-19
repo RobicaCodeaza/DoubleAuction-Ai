@@ -43,3 +43,20 @@ export async function deleteAgent(id) {
     if (error) throw new Error('Agentul nu a putut fi șters')
     return data
 }
+
+/**
+ * Obține toate tranzacțiile unui agent dintr-un model.
+ * @param {number} modelId - ID-ul modelului
+ * @param {number} agentId - ID-ul agentului
+ * @returns {Promise<ITranzactie[]>} - Tranzacțiile agentului
+ */
+export async function getTranzactiiAgent(modelId, agentId) {
+    const { data, error } = await supabase
+        .from('Tranzactii')
+        .select('*')
+        .eq('model_id', modelId)
+        .or(`cumparator.eq.${agentId},vanzator.eq.${agentId}`) // poate fi cumpărător sau vânzător
+    console.log('data', data)
+    if (error) throw new Error('Nu s-au putut încărca tranzacțiile agentului')
+    return data
+}

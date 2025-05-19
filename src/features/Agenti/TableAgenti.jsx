@@ -113,7 +113,7 @@ import { StergereAgent } from './StergereAgent'
 //     },
 // ]
 
-export default function TableAgenti({ agents }) {
+export default function TableAgenti({ agents, model }) {
     return (
         <div className="tabland:[&>div]:max-h-[800px] tabport:[&>div]:max-h-[600px] phone:[&>div]:max-h-[400px] grid w-full [&>div]:max-h-[300px] [&>div]:rounded-lg [&>div]:border">
             <Table>
@@ -144,10 +144,13 @@ export default function TableAgenti({ agents }) {
                             <TableCell>
                                 <DetaliiAgent
                                     nume={agent.nume}
+                                    rol={agent.rol}
                                     comportament={agent.comportament}
                                     ascultaTrend={agent.sensibil_la_trend}
                                     invataIstoric={agent.memorie_istoric}
                                     prioritate={agent.prioritate}
+                                    modelId={model.id}
+                                    agentId={agent.id}
                                 ></DetaliiAgent>
                             </TableCell>
                             <TableCell className={'flex gap-2'}>

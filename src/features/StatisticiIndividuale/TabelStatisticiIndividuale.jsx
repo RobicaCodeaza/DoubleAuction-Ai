@@ -100,7 +100,7 @@ export default function TabelStatisticiIndividuale() {
                                 </Badge>
                             </TableCell>
 
-                            <TableCell className="flex gap-2">
+                            <TableCell className="flex items-center gap-2">
                                 <Badge className="border border-slate-300 bg-slate-100 text-slate-700">
                                     Preț: {agent.price}
                                 </Badge>

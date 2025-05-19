@@ -23,6 +23,12 @@ const badgeVariants = cva(
                 indigo: 'bg-indigo-100 text-indigo-900 border-transparent dark:bg-indigo-900 dark:text-indigo-100',
                 lime: 'bg-lime-100 text-lime-900 border-transparent dark:bg-lime-900 dark:text-lime-100',
                 rose: 'bg-rose-100 text-rose-900 border-transparent dark:bg-rose-900 dark:text-rose-100',
+                success:
+                    'bg-green-500 text-white border-transparent dark:bg-green-700',
+                'second-success':
+                    'bg-amber-500 text-white border-transparent dark:bg-yellow-700',
+                'no-success':
+                    'bg-red-500 text-white border-transparent dark:bg-red-700',
             },
         },
         defaultVariants: {
