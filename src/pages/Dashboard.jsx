@@ -12,11 +12,17 @@ import {
 } from 'lucide-react'
 import { useDashboards } from '@/features/Dashboard/useGetDashboard'
 import { useModelContext } from '@/context/ContextSimulare'
+import { useTransactions } from '@/features/Tranzactii/useGetTranzactii'
+import { calculeazaRaportSatisfactie } from '@/lib/helpers'
+import { useAgents } from '@/features/Agenti/useGetAgents'
 function Dashboard() {
     const { model } = useModelContext()
     const { dashboard, isLoading } = useDashboards(model)
+    const { isLoading: isLoadingTransactions, transactions } =
+        useTransactions(model)
+    const { isLoading: isLoadingAgents, agents } = useAgents(model)
 
-    if (isLoading) {
+    if (isLoading || isLoadingTransactions || isLoadingAgents) {
         return (
             <div className="flex h-full w-full items-center justify-center">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900"></div>
@@ -31,6 +37,48 @@ function Dashboard() {
                 </div>
             </div>
         )
+
+    const maxRunde = transactions?.reduce((max, tx) => {
+        return tx.runda > max ? tx.runda : max
+    }, 0)
+
+    const medieTranzactiiPerRunda = (transactions?.length / maxRunde).toFixed(2)
+    const totalTranzactii = transactions?.length
+    const procentTranzactiiRundaPerTotal = (
+        (medieTranzactiiPerRunda / totalTranzactii) *
+        100
+    ).toFixed(2)
+
+    const medieCantitatePerRunda = (
+        transactions?.reduce((acc, tx) => {
+            return acc + tx.cantitate
+        }, 0) / maxRunde
+    ).toFixed(2)
+    const totalCantitate = transactions?.reduce((acc, tx) => {
+        return acc + tx.cantitate
+    }, 0)
+    const procentCantitateRundaPerTotal = (
+        (medieCantitatePerRunda / totalCantitate) *
+        100
+    ).toFixed(2)
+
+    const mediePretPerRunda = (
+        transactions?.reduce((acc, tx) => {
+            return acc + tx.pret
+        }, 0) / maxRunde
+    ).toFixed(2)
+    const totalPret = transactions?.reduce((acc, tx) => {
+        return acc + tx.pret
+    }, 0)
+    const procentPretRundaPerTotal = (
+        (mediePretPerRunda / totalPret) *
+        100
+    ).toFixed(2)
+
+    const { satisfacutiCumparatori, satisfacutiVanzatori, rezultate } =
+        calculeazaRaportSatisfactie(agents, transactions)
+
+    console.log(rezultate, satisfacutiCumparatori, satisfacutiVanzatori)
 
     // console.log('dashboard', dashboard)
     const eficientaAlocativa = dashboard.map((dashboard) => {
@@ -65,7 +113,7 @@ function Dashboard() {
                     Header={
                         <HeaderStatisticCard
                             IconStats={ArrowRightLeft}
-                            status="24%"
+                            status={`${procentTranzactiiRundaPerTotal}%`}
                         />
                     }
                     Content={
@@ -75,7 +123,7 @@ function Dashboard() {
                     }
                     Footer={
                         <div className="text-md w-full text-center font-medium text-slate-600">
-                            24/24
+                            {medieTranzactiiPerRunda}/{totalTranzactii}
                         </div>
                     }
                 ></StatisticCard>
@@ -83,7 +131,7 @@ function Dashboard() {
                     Header={
                         <HeaderStatisticCard
                             IconStats={ArrowUp10}
-                            status="24%"
+                            status={`${procentCantitateRundaPerTotal}%`}
                         />
                     }
                     Content={
@@ -93,7 +141,7 @@ function Dashboard() {
                     }
                     Footer={
                         <div className="text-md w-full text-center font-medium text-slate-600">
-                            24/24
+                            {medieCantitatePerRunda}/{totalCantitate}
                         </div>
                     }
                 ></StatisticCard>{' '}
@@ -101,7 +149,7 @@ function Dashboard() {
                     Header={
                         <HeaderStatisticCard
                             IconStats={HandCoins}
-                            status="24%"
+                            status={`${procentPretRundaPerTotal}%`}
                         />
                     }
                     Content={
@@ -111,7 +159,7 @@ function Dashboard() {
                     }
                     Footer={
                         <div className="text-md w-full text-center font-medium text-slate-600">
-                            24/24
+                            {mediePretPerRunda}/{totalPret}
                         </div>
                     }
                 ></StatisticCard>{' '}
@@ -119,7 +167,7 @@ function Dashboard() {
                     Header={
                         <HeaderStatisticCard
                             IconStats={HeartHandshake}
-                            status="24%"
+                            status="__%"
                         />
                     }
                     Content={
@@ -129,7 +177,7 @@ function Dashboard() {
                     }
                     Footer={
                         <div className="text-md w-full text-center font-medium text-slate-600">
-                            24/24
+                            {satisfacutiCumparatori}/{satisfacutiVanzatori}
                         </div>
                     }
                 ></StatisticCard>

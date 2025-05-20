@@ -93,29 +93,29 @@ const data = {
                 },
             ],
         },
-        {
-            title: 'Statistici Individuale',
-            url: '/individ',
-            icon: ChartNoAxesColumnDecreasing,
-            items: [
-                {
-                    title: 'General',
-                    url: '#',
-                },
-                {
-                    title: 'Team',
-                    url: '#',
-                },
-                {
-                    title: 'Billing',
-                    url: '#',
-                },
-                {
-                    title: 'Limits',
-                    url: '#',
-                },
-            ],
-        },
+        // {
+        //     title: 'Statistici Individuale',
+        //     url: '/individ',
+        //     icon: ChartNoAxesColumnDecreasing,
+        //     items: [
+        //         {
+        //             title: 'General',
+        //             url: '#',
+        //         },
+        //         {
+        //             title: 'Team',
+        //             url: '#',
+        //         },
+        //         {
+        //             title: 'Billing',
+        //             url: '#',
+        //         },
+        //         {
+        //             title: 'Limits',
+        //             url: '#',
+        //         },
+        //     ],
+        // },
     ],
     // projects: [
     //     {

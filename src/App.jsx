@@ -8,7 +8,7 @@ import Dashboard from './pages/Dashboard'
 import AppLayout from './ui/AppLayout'
 import Agenti from './pages/Agenti'
 import Tranzactii from './pages/Tranzactii'
-import StatisticiIndividuale from './pages/StatisticiIndividuale'
+// import StatisticiIndividuale from './pages/StatisticiIndividuale'
 import { ContextSimulareProvider } from './context/ContextSimulare'
 
 const queryClient = new QueryClient({
@@ -48,12 +48,12 @@ function App() {
                                 path="tranzactii"
                                 element={<Tranzactii></Tranzactii>}
                             ></Route>
-                            <Route
+                            {/* <Route
                                 path="individ"
                                 element={
                                     <StatisticiIndividuale></StatisticiIndividuale>
                                 }
-                            ></Route>
+                            ></Route> */}
                         </Route>
                     </Routes>
                 </BrowserRouter>
