@@ -16,14 +16,6 @@ export function analizeazaTranzactii(tranzactii) {
         totalValoare += valoare
         tranzactiiCount += 1
     }
-    console.log(
-        'totalCantitate',
-        totalCantitate,
-        'totalValoare',
-        totalValoare,
-        'tranzactiiCount',
-        tranzactiiCount
-    )
 
     return {
         numarTranzactii: tranzactiiCount,
@@ -102,5 +94,40 @@ export function calculeazaRaportSatisfactie(agenti, tranzactii) {
                 ? (satisfacutiCumparatori / satisfacutiVanzatori).toFixed(2)
                 : '∞',
         rezultate, // listă cu scorul fiecărui agent
+    }
+}
+
+export function calculeazaEficientePiataPeRunda(
+    runda,
+    tranzactii,
+    cantitatiDorite,
+    nrMaxTranzactii = 5
+) {
+    const n = tranzactii.length
+    const preturi = tranzactii.map((t) => t.pret)
+    const totalCantitate = tranzactii.reduce((sum, t) => sum + t.cantitate, 0)
+    const mediePret = preturi.reduce((a, b) => a + b, 0) / n
+
+    const cumparatori = [...new Set(tranzactii.map((t) => t.cumparator))]
+    const cantitateDorita = cantitatiDorite
+        .filter((a) => cumparatori.includes(a.agent_id))
+        .reduce((sum, a) => sum + a.cantitate_initiala, 0)
+
+    const eficienta_alocativa =
+        cantitateDorita > 0 ? (totalCantitate / cantitateDorita) * 100 : 0
+    const rata_tranzactionare = (n / nrMaxTranzactii) * 100
+    const std_pret = Math.sqrt(
+        preturi.reduce((sum, p) => sum + Math.pow(p - mediePret, 2), 0) / n
+    )
+    const delta_p =
+        preturi.reduce((sum, p) => sum + Math.abs(p - mediePret), 0) / n
+
+    return {
+        runda,
+        eficienta_alocativa: Math.round(eficienta_alocativa),
+        rata_tranzactionare: Math.round(rata_tranzactionare),
+        volatilitate_pret: Number(std_pret.toFixed(2)),
+        diferenta_echilibru: Number(delta_p.toFixed(2)),
+        pret_echilibru: Number(mediePret.toFixed(2)),
     }
 }

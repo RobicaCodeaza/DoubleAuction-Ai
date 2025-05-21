@@ -13,14 +13,42 @@ import {
 import { useDashboards } from '@/features/Dashboard/useGetDashboard'
 import { useModelContext } from '@/context/ContextSimulare'
 import { useTransactions } from '@/features/Tranzactii/useGetTranzactii'
-import { calculeazaRaportSatisfactie } from '@/lib/helpers'
+import {
+    calculeazaEficientePiataPeRunda,
+    calculeazaRaportSatisfactie,
+} from '@/lib/helpers'
 import { useAgents } from '@/features/Agenti/useGetAgents'
+import { useMemo } from 'react'
+
 function Dashboard() {
     const { model } = useModelContext()
     const { dashboard, isLoading } = useDashboards(model)
     const { isLoading: isLoadingTransactions, transactions } =
         useTransactions(model)
     const { isLoading: isLoadingAgents, agents } = useAgents(model)
+
+    const eficiente = useMemo(() => {
+        if (!transactions || !agents) return []
+
+        const cantitatiDorite = agents
+            .filter((a) => a.rol === 'cumparator')
+            .map((a) => ({ agent_id: a.id, cantitate_initiala: a.cantitate }))
+
+        const tranzactiiPeRunda = {}
+        for (const t of transactions) {
+            if (!tranzactiiPeRunda[t.runda]) tranzactiiPeRunda[t.runda] = []
+            tranzactiiPeRunda[t.runda].push(t)
+        }
+
+        return Object.entries(tranzactiiPeRunda).map(([runda, tranz]) =>
+            calculeazaEficientePiataPeRunda(
+                Number(runda),
+                tranz,
+                cantitatiDorite
+            )
+        )
+    }, [transactions, agents])
+    console.log('eficiente', eficiente)
 
     if (isLoading || isLoadingTransactions || isLoadingAgents) {
         return (
@@ -75,10 +103,8 @@ function Dashboard() {
         100
     ).toFixed(2)
 
-    const { satisfacutiCumparatori, satisfacutiVanzatori, rezultate } =
+    const { satisfacutiCumparatori, satisfacutiVanzatori } =
         calculeazaRaportSatisfactie(agents, transactions)
-
-    console.log(rezultate, satisfacutiCumparatori, satisfacutiVanzatori)
 
     // console.log('dashboard', dashboard)
     const eficientaAlocativa = dashboard.map((dashboard) => {
