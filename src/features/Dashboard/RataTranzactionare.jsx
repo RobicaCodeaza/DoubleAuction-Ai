@@ -35,7 +35,7 @@ const chartConfig = {
     },
 }
 
-export function RataTranzactionare({ rataTranzactionare }) {
+export function RataTranzactionare({ rataTranzactionare, runde }) {
     return (
         <Card>
             <CardHeader>
@@ -103,7 +103,7 @@ export function RataTranzactionare({ rataTranzactionare }) {
                     <TrendingUp className="h-4 w-4" />
                 </div>
                 <div className="text-muted-foreground leading-none">
-                    Simulare: runde 1–6
+                    Simulare: runde 1–{runde}
                 </div>
             </CardFooter>
         </Card>

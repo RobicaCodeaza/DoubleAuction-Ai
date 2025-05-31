@@ -31,7 +31,7 @@ function Tranzactii() {
             <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-lg font-medium">Tranzactii</h2>
             </div>
-            <div className="tabport:grid-cols-4 grid auto-rows-min grid-cols-2 gap-4">
+            {/* <div className="tabport:grid-cols-4 grid auto-rows-min grid-cols-2 gap-4">
                 <StatisticCard
                     Header={
                         <HeaderStatisticCardAgent
@@ -104,7 +104,7 @@ function Tranzactii() {
                         ></ContentStatisticCardAgent>
                     }
                 ></StatisticCard>
-            </div>
+            </div> */}
             <TabelTranzactii transactions={transactions}></TabelTranzactii>
         </div>
     )

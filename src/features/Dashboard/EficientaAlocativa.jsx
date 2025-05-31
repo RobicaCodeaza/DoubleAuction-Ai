@@ -37,7 +37,7 @@ const chartConfig = {
     },
 }
 
-export function EficientaAlocativa({ eficientaAlocativa }) {
+export function EficientaAlocativa({ eficientaAlocativa, runde }) {
     // console.log('eficientaAlocativa', eficientaAlocativa)
 
     return (
@@ -59,7 +59,20 @@ export function EficientaAlocativa({ eficientaAlocativa }) {
                             right: 12,
                         }}
                     >
-                        <CartesianGrid vertical={false} />
+                        <CartesianGrid vertical={true} />
+                        <YAxis
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            label={{
+                                value: 'Eficiență',
+                                angle: -90,
+                                position: 'insideLeft',
+                                dy: -30,
+                                dx: -10,
+                                style: { textAnchor: 'middle' },
+                            }}
+                        />
                         <XAxis
                             dataKey="runda"
                             tickLine={false}
@@ -71,20 +84,7 @@ export function EficientaAlocativa({ eficientaAlocativa }) {
                                 offset: 0,
                             }}
                         />
-                        <YAxis
-                            domain={[0.0, 1]}
-                            tickLine={false}
-                            axisLine={false}
-                            tickMargin={8}
-                            label={{
-                                value: 'Eficiență',
-                                angle: -90,
-                                position: 'insideLeft',
-                            }}
-                            // tickFormatter={(value) =>
-                            //     `${(value * 100).toFixed(0)}%`
-                            // }
-                        />
+
                         <ChartTooltip
                             cursor={false}
                             content={<ChartTooltipContent />}
@@ -108,7 +108,7 @@ export function EficientaAlocativa({ eficientaAlocativa }) {
                             <TrendingUp className="h-4 w-4" />
                         </div>
                         <div className="text-muted-foreground leading-none">
-                            Simulare: runde 1–6
+                            Simulare: runde 1–{runde}
                         </div>
                     </div>
                 </div>

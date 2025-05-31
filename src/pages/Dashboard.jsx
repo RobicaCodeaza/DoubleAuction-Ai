@@ -1,3 +1,4 @@
+// import { useMemo } from 'react'
 import { DifFataDeEchilibru } from '@/features/Dashboard/DifFataDeEchilibru'
 import { EficientaAlocativa } from '@/features/Dashboard/EficientaAlocativa'
 import HeaderStatisticCard from '@/features/Dashboard/HeaderStatisticCard'
@@ -12,15 +13,46 @@ import {
 } from 'lucide-react'
 import { useDashboards } from '@/features/Dashboard/useGetDashboard'
 import { useModelContext } from '@/context/ContextSimulare'
-import { useTransactions } from '@/features/Tranzactii/useGetTranzactii'
-import { calculeazaRaportSatisfactie } from '@/lib/helpers'
+import {
+    // calculeazaEficientePiataPeRunda,
+    calculeazaRaportSatisfactie,
+} from '@/lib/helpers'
 import { useAgents } from '@/features/Agenti/useGetAgents'
+import { useTransactionsAndDashboard } from '@/features/Tranzactii/useGetTranzactiiAndDashboard'
+// import { useCreateDashboard } from '@/features/Dashboard/useCreateDashboard'
+
 function Dashboard() {
     const { model } = useModelContext()
     const { dashboard, isLoading } = useDashboards(model)
-    const { isLoading: isLoadingTransactions, transactions } =
-        useTransactions(model)
+    // const { isCreating: isCreatingDashboard, createDashboardEntry } =
+    //     useCreateDashboard
+
     const { isLoading: isLoadingAgents, agents } = useAgents(model)
+    const { isLoading: isLoadingTransactions, transactions } =
+        useTransactionsAndDashboard(model)
+
+    // const eficiente = useMemo(() => {
+    //     if (!transactions || !agents) return []
+
+    //     const cantitatiDorite = agents
+    //         .filter((a) => a.rol === 'cumparator')
+    //         .map((a) => ({ agent_id: a.id, cantitate_initiala: a.cantitate }))
+
+    //     const tranzactiiPeRunda = {}
+    //     for (const t of transactions) {
+    //         if (!tranzactiiPeRunda[t.runda]) tranzactiiPeRunda[t.runda] = []
+    //         tranzactiiPeRunda[t.runda].push(t)
+    //     }
+
+    //     return Object.entries(tranzactiiPeRunda).map(([runda, tranz]) =>
+    //         calculeazaEficientePiataPeRunda(
+    //             Number(runda),
+    //             tranz,
+    //             cantitatiDorite
+    //         )
+    //     )
+    // }, [transactions, agents])
+    // console.log('eficiente', eficiente)
 
     if (isLoading || isLoadingTransactions || isLoadingAgents) {
         return (
@@ -41,6 +73,7 @@ function Dashboard() {
     const maxRunde = transactions?.reduce((max, tx) => {
         return tx.runda > max ? tx.runda : max
     }, 0)
+    console.log('maxRunde', maxRunde)
 
     const medieTranzactiiPerRunda = (transactions?.length / maxRunde).toFixed(2)
     const totalTranzactii = transactions?.length
@@ -75,10 +108,8 @@ function Dashboard() {
         100
     ).toFixed(2)
 
-    const { satisfacutiCumparatori, satisfacutiVanzatori, rezultate } =
+    const { satisfacutiCumparatori, satisfacutiVanzatori } =
         calculeazaRaportSatisfactie(agents, transactions)
-
-    console.log(rezultate, satisfacutiCumparatori, satisfacutiVanzatori)
 
     // console.log('dashboard', dashboard)
     const eficientaAlocativa = dashboard.map((dashboard) => {
@@ -95,6 +126,7 @@ function Dashboard() {
             date: dashboard.diferenta_echilibru,
             runda: dashboard.runda,
             pretEchilibru: dashboard.pret_echilibru,
+            delta_semnat: dashboard.delta_semnat,
         }
     })
 
@@ -185,15 +217,19 @@ function Dashboard() {
             <div className="tabport:grid tabport:grid-cols-2 flex flex-1 flex-col gap-4 rounded-xl bg-slate-50 p-4">
                 <EficientaAlocativa
                     eficientaAlocativa={eficientaAlocativa}
+                    runde={maxRunde}
                 ></EficientaAlocativa>
                 <RataTranzactionare
                     rataTranzactionare={rataTranzactionare}
+                    runde={maxRunde}
                 ></RataTranzactionare>
                 <VolatilitatePreturi
                     volatilitatePreturi={volatilitatePreturi}
+                    runde={maxRunde}
                 ></VolatilitatePreturi>
                 <DifFataDeEchilibru
                     difFataDeEchilibru={difFataDeEchilibru}
+                    runde={maxRunde}
                 ></DifFataDeEchilibru>
             </div>
         </div>

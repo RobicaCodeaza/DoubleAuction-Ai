@@ -16,14 +16,6 @@ export function analizeazaTranzactii(tranzactii) {
         totalValoare += valoare
         tranzactiiCount += 1
     }
-    console.log(
-        'totalCantitate',
-        totalCantitate,
-        'totalValoare',
-        totalValoare,
-        'tranzactiiCount',
-        tranzactiiCount
-    )
 
     return {
         numarTranzactii: tranzactiiCount,
@@ -102,5 +94,71 @@ export function calculeazaRaportSatisfactie(agenti, tranzactii) {
                 ? (satisfacutiCumparatori / satisfacutiVanzatori).toFixed(2)
                 : '∞',
         rezultate, // listă cu scorul fiecărui agent
+    }
+}
+
+export function calculeazaEficientePiataPeRunda(
+    runda,
+    tranzactii,
+    cantitatiDorite,
+    propuneriTotalePeRunda = 5,
+    modelId
+) {
+    const n = tranzactii.length
+    if (n === 0) {
+        return {
+            runda,
+            eficienta_alocativa: 0,
+            rata_tranzactionare: 0,
+            volatilitate_pret: 0,
+            diferenta_echilibru: 0,
+            pret_echilibru: 0,
+            pret_real_mediu: 0,
+        }
+    }
+
+    const preturi = tranzactii.map((t) => t.pret)
+    const totalCantitate = tranzactii.reduce((sum, t) => sum + t.cantitate, 0)
+    const mediePret = preturi.reduce((a, b) => a + b, 0) / n
+
+    const totalPretCantitate = tranzactii.reduce(
+        (sum, t) => sum + t.pret * t.cantitate,
+        0
+    )
+    const pretEchilibru =
+        totalCantitate > 0 ? totalPretCantitate / totalCantitate : 0
+
+    const cumparatori = [...new Set(tranzactii.map((t) => t.cumparator))]
+    const cantitateDorita = cantitatiDorite
+        .filter((a) => cumparatori.includes(a.agent_id))
+        .reduce((sum, a) => sum + a.cantitate_initiala, 0)
+
+    const eficienta_alocativa =
+        cantitateDorita > 0 ? (totalCantitate / cantitateDorita) * 100 : 0
+
+    const rata_tranzactionare = (n / propuneriTotalePeRunda) * 100
+
+    const std_pret = Math.sqrt(
+        preturi.reduce((sum, p) => sum + Math.pow(p - mediePret, 2), 0) / n
+    )
+
+    const delta_p =
+        preturi.reduce((sum, p) => sum + Math.abs(p - pretEchilibru), 0) / n
+
+    // ➕ Media reală a prețurilor tranzacționate (practic e același mediePret)
+
+    const delta_semnat =
+        preturi.reduce((sum, p) => sum + (p - pretEchilibru), 0) / n
+    const model_id = modelId
+
+    return {
+        runda,
+        model_id,
+        eficienta_alocativa: Number(eficienta_alocativa.toFixed(2)),
+        rata_tranzactionare: Number(rata_tranzactionare.toFixed(2)),
+        volatilitate_pret: Number(std_pret.toFixed(2)),
+        diferenta_echilibru: Number(delta_p.toFixed(2)), // Δp absolut
+        delta_semnat: Number(delta_semnat.toFixed(2)), // Δp semnat
+        pret_echilibru: Number(pretEchilibru.toFixed(2)),
     }
 }
