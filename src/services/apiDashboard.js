@@ -23,3 +23,13 @@ export async function createDashboardEntry(entry) {
     if (error) throw new Error('Nu s-a putut salva metrica în dashboard')
     return data
 }
+
+export async function createDashboardEntries(entries) {
+    const { data, error } = await supabase
+        .from('Dashboard')
+        .insert(entries)
+        .select()
+
+    if (error) throw new Error('Nu s-a putut salva metrica în dashboard')
+    return data
+}

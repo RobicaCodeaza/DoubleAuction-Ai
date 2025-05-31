@@ -39,7 +39,7 @@ const chartConfig = {
     },
 }
 
-export function DifFataDeEchilibru({ difFataDeEchilibru }) {
+export function DifFataDeEchilibru({ difFataDeEchilibru, runde }) {
     // console.log('difFataDeEchilibru', difFataDeEchilibru)
 
     return (
@@ -74,9 +74,9 @@ export function DifFataDeEchilibru({ difFataDeEchilibru }) {
                             axisLine={false}
                             tickMargin={8}
                             label={{
-                                value: 'date',
+                                value: 'Delta_semnat/Diferență echilibru/Preț echilibru',
                                 angle: -90,
-                                position: 'insideLeft',
+                                position: 'insideBottomLeft',
                             }}
                         />
                         <ChartTooltip
@@ -101,6 +101,16 @@ export function DifFataDeEchilibru({ difFataDeEchilibru }) {
                             strokeDasharray="5 5"
                             strokeWidth={2}
                         />
+
+                        <Area
+                            dataKey="delta_semnat"
+                            type="monotone"
+                            stroke="oklch(57.7% 0.245 27.325)"
+                            fill="oklch(57.7% 0.245 27.325)"
+                            fillOpacity={0.1}
+                            strokeDasharray="5 5"
+                            strokeWidth={2}
+                        />
                     </AreaChart>
                 </ChartContainer>
             </CardContent>
@@ -110,7 +120,7 @@ export function DifFataDeEchilibru({ difFataDeEchilibru }) {
                     <TrendingUp className="h-4 w-4" />
                 </div>
                 <div className="text-muted-foreground leading-none">
-                    Simulare: runde 1–6
+                    Simulare: runde 1–{runde}
                 </div>
             </CardFooter>
         </Card>

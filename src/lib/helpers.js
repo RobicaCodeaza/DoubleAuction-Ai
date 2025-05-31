@@ -101,12 +101,32 @@ export function calculeazaEficientePiataPeRunda(
     runda,
     tranzactii,
     cantitatiDorite,
-    nrMaxTranzactii = 5
+    propuneriTotalePeRunda = 5,
+    modelId
 ) {
     const n = tranzactii.length
+    if (n === 0) {
+        return {
+            runda,
+            eficienta_alocativa: 0,
+            rata_tranzactionare: 0,
+            volatilitate_pret: 0,
+            diferenta_echilibru: 0,
+            pret_echilibru: 0,
+            pret_real_mediu: 0,
+        }
+    }
+
     const preturi = tranzactii.map((t) => t.pret)
     const totalCantitate = tranzactii.reduce((sum, t) => sum + t.cantitate, 0)
     const mediePret = preturi.reduce((a, b) => a + b, 0) / n
+
+    const totalPretCantitate = tranzactii.reduce(
+        (sum, t) => sum + t.pret * t.cantitate,
+        0
+    )
+    const pretEchilibru =
+        totalCantitate > 0 ? totalPretCantitate / totalCantitate : 0
 
     const cumparatori = [...new Set(tranzactii.map((t) => t.cumparator))]
     const cantitateDorita = cantitatiDorite
@@ -115,19 +135,30 @@ export function calculeazaEficientePiataPeRunda(
 
     const eficienta_alocativa =
         cantitateDorita > 0 ? (totalCantitate / cantitateDorita) * 100 : 0
-    const rata_tranzactionare = (n / nrMaxTranzactii) * 100
+
+    const rata_tranzactionare = (n / propuneriTotalePeRunda) * 100
+
     const std_pret = Math.sqrt(
         preturi.reduce((sum, p) => sum + Math.pow(p - mediePret, 2), 0) / n
     )
+
     const delta_p =
-        preturi.reduce((sum, p) => sum + Math.abs(p - mediePret), 0) / n
+        preturi.reduce((sum, p) => sum + Math.abs(p - pretEchilibru), 0) / n
+
+    // ➕ Media reală a prețurilor tranzacționate (practic e același mediePret)
+
+    const delta_semnat =
+        preturi.reduce((sum, p) => sum + (p - pretEchilibru), 0) / n
+    const model_id = modelId
 
     return {
         runda,
-        eficienta_alocativa: Math.round(eficienta_alocativa),
-        rata_tranzactionare: Math.round(rata_tranzactionare),
+        model_id,
+        eficienta_alocativa: Number(eficienta_alocativa.toFixed(2)),
+        rata_tranzactionare: Number(rata_tranzactionare.toFixed(2)),
         volatilitate_pret: Number(std_pret.toFixed(2)),
-        diferenta_echilibru: Number(delta_p.toFixed(2)),
-        pret_echilibru: Number(mediePret.toFixed(2)),
+        diferenta_echilibru: Number(delta_p.toFixed(2)), // Δp absolut
+        delta_semnat: Number(delta_semnat.toFixed(2)), // Δp semnat
+        pret_echilibru: Number(pretEchilibru.toFixed(2)),
     }
 }
