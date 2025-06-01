@@ -162,3 +162,207 @@ export function calculeazaEficientePiataPeRunda(
         pret_echilibru: Number(pretEchilibru.toFixed(2)),
     }
 }
+
+export function calculeazaTrendSiIstoricAgent(agent, tranzactiiPerRunda) {
+    const runde = Object.keys(tranzactiiPerRunda)
+        .map(Number)
+        .sort((a, b) => a - b)
+
+    let trenduriDetectate = 0
+    let deciziiCorecte = 0
+    let imbunatatiri = 0
+
+    let ultimaMediePret = null
+
+    for (let i = 1; i < runde.length; i++) {
+        const pretAnterior = tranzactiiPerRunda[runde[i - 1]].map((t) => t.pret)
+        const pretCurent = tranzactiiPerRunda[runde[i]].map((t) => t.pret)
+
+        const medieAnterioara =
+            pretAnterior.reduce((a, b) => a + b, 0) / pretAnterior.length
+        const medieCurenta =
+            pretCurent.reduce((a, b) => a + b, 0) / pretCurent.length
+
+        const trend =
+            medieCurenta > medieAnterioara
+                ? 'up'
+                : medieCurenta < medieAnterioara
+                  ? 'down'
+                  : 'flat'
+        trenduriDetectate++
+
+        const agentTranzactionat = tranzactiiPerRunda[runde[i]].some(
+            (t) => t.cumparator === agent.id || t.vanzator === agent.id
+        )
+
+        if (agentTranzactionat) {
+            if (
+                (agent.rol === 'vanzator' && trend === 'up') ||
+                (agent.rol === 'cumparator' && trend === 'down')
+            ) {
+                deciziiCorecte++
+            }
+        }
+
+        // Eficiența istorică: doar dacă agentul a avut tranzacții
+        const preturiAgentCurent = tranzactiiPerRunda[runde[i]]
+            .filter((t) => t.cumparator === agent.id || t.vanzator === agent.id)
+            .map((t) => t.pret)
+
+        if (preturiAgentCurent.length > 0) {
+            const medieAgentCurent =
+                preturiAgentCurent.reduce((a, b) => a + b, 0) /
+                preturiAgentCurent.length
+
+            if (
+                ultimaMediePret !== null &&
+                ((agent.rol === 'vanzator' &&
+                    medieAgentCurent > ultimaMediePret) ||
+                    (agent.rol === 'cumparator' &&
+                        medieAgentCurent < ultimaMediePret))
+            ) {
+                imbunatatiri++
+            }
+
+            ultimaMediePret = medieAgentCurent
+        }
+    }
+
+    const totalComparatii = runde.length - 1
+
+    return {
+        eficientaTrend:
+            trenduriDetectate > 0
+                ? Number(
+                      ((deciziiCorecte / trenduriDetectate) * 100).toFixed(2)
+                  )
+                : 0,
+        eficientaIstoric:
+            totalComparatii > 0
+                ? Number(((imbunatatiri / totalComparatii) * 100).toFixed(2))
+                : 0,
+    }
+}
+
+export function calculeazaEficientaAgentului(agent, transactions, proposals) {
+    const pretRezerva = agent.pret
+    const cantitateTotala = agent.cantitate
+
+    const tranzactiiAgent = transactions.filter(
+        (t) => t.cumparator === agent.id || t.vanzator === agent.id
+    )
+
+    const propuneriAgent = proposals.filter((p) => p.agent_id === agent.id)
+
+    // ➡ Grupăm tranzacțiile pe rundă (pt trend și istoric)
+    const tranzactiiPerRunda = {}
+    for (const t of transactions) {
+        if (!tranzactiiPerRunda[t.runda]) tranzactiiPerRunda[t.runda] = []
+        tranzactiiPerRunda[t.runda].push(t)
+    }
+
+    const { eficientaTrend, eficientaIstoric } = calculeazaTrendSiIstoricAgent(
+        agent,
+        tranzactiiPerRunda
+    )
+
+    if (tranzactiiAgent.length === 0) {
+        if (propuneriAgent.length === 0) {
+            return {
+                succesRate: 0,
+                mediePropuneriPeRunda: 0,
+                scorEfort: 0,
+                maxRunda: 0,
+                maxPretPropus: 0,
+                maxCantitatePropusa: 0,
+                eficientaTrend,
+                eficientaIstoric,
+                tipEficienta: 'fara_propuneri',
+            }
+        }
+
+        const totalPropuneri = propuneriAgent.length
+        const rundeUnice = [...new Set(propuneriAgent.map((p) => p.runda))]
+        const mediePropuneriPeRunda = totalPropuneri / rundeUnice.length
+
+        const scorEfort = propuneriAgent.reduce(
+            (sum, p) => sum + p.cantitate_propusa * p.pret_propus,
+            0
+        )
+
+        const maxRunda = Math.max(...propuneriAgent.map((p) => p.runda))
+        const maxPretPropus = Math.max(
+            ...propuneriAgent.map((p) => p.pret_propus)
+        )
+        const maxCantitatePropusa = Math.max(
+            ...propuneriAgent.map((p) => p.cantitate_propusa)
+        )
+
+        return {
+            succesRate: 0,
+            mediePropuneriPeRunda: Number(mediePropuneriPeRunda.toFixed(2)),
+            scorEfort: Number(scorEfort.toFixed(2)),
+            maxRunda,
+            maxPretPropus: Number(maxPretPropus.toFixed(2)),
+            maxCantitatePropusa,
+            tipEficienta: 'fara_tranzactii',
+        }
+    }
+
+    // ✅ Are tranzacții → calculează metrice clasice
+    const preturiTranzactii = tranzactiiAgent.map((t) => t.pret)
+    const cantitatiTranzactii = tranzactiiAgent.map((t) => t.cantitate)
+
+    const mediaPretTranz = preturiTranzactii.length
+        ? preturiTranzactii.reduce((a, b) => a + b, 0) /
+          preturiTranzactii.length
+        : 0
+
+    const totalCantTranz = cantitatiTranzactii.reduce((a, b) => a + b, 0)
+    const primaRunda = Math.min(...tranzactiiAgent.map((t) => t.runda))
+    const T = primaRunda - 1
+
+    const rezultat = {
+        eficientaCantitate: cantitateTotala
+            ? Number(((totalCantTranz / cantitateTotala) * 100).toFixed(2))
+            : 0,
+
+        eficientaPret: pretRezerva
+            ? Number(((mediaPretTranz / pretRezerva) * 100).toFixed(2))
+            : 0,
+
+        eficientaViteza: Number(((1 / (T + 1)) * 100).toFixed(2)),
+
+        tipEficienta: 'cu_tranzactii',
+
+        eficientaTrend,
+        eficientaIstoric,
+    }
+
+    if (agent.comportament === 'pasiv') {
+        rezultat.eficientaPasiv = pretRezerva
+            ? Number(
+                  (
+                      (1 -
+                          Math.abs(pretRezerva - mediaPretTranz) /
+                              pretRezerva) *
+                      100
+                  ).toFixed(2)
+              )
+            : 0
+    }
+
+    if (agent.comportament === 'agresiv') {
+        rezultat.eficientaAgresiv = pretRezerva
+            ? Number(
+                  (
+                      (1 / (T + 1)) *
+                      (Math.abs(pretRezerva - mediaPretTranz) / pretRezerva) *
+                      100
+                  ).toFixed(2)
+              )
+            : 0
+    }
+
+    return rezultat
+}
