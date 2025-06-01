@@ -1,4 +1,5 @@
 import supabase from './supabase'
+import { calculeazaEficientaAgentului } from '@/lib/helpers'
 
 // 1. Obține toți agenții pentru un model
 export async function getAgenti(modelId) {
@@ -56,7 +57,48 @@ export async function getTranzactiiAgent(modelId, agentId) {
         .select('*')
         .eq('model_id', modelId)
         .or(`cumparator.eq.${agentId},vanzator.eq.${agentId}`) // poate fi cumpărător sau vânzător
-    console.log('data', data)
+    // console.log('data', data)
     if (error) throw new Error('Nu s-au putut încărca tranzacțiile agentului')
     return data
+}
+
+export async function getAgentDataAndCalculateMetrics(modelId, agentId) {
+    console.log('getAgentDataAndCalculateMetrics called:', { modelId, agentId })
+
+    // ✅ Fetch agentul (cu detalii)
+    const { data: agent, error: agentError } = await supabase
+        .from('Agent')
+        .select('*')
+        .eq('id', agentId)
+        .eq('model_id', modelId)
+        .single()
+
+    if (agentError) throw new Error('Nu s-a putut încărca agentul')
+
+    // ✅ Fetch tranzacțiile agentului
+    const { data: transactions, error: tranzError } = await supabase
+        .from('Tranzactii')
+        .select('*')
+        .eq('model_id', modelId)
+        .or(`cumparator.eq.${agentId},vanzator.eq.${agentId}`)
+
+    if (tranzError)
+        throw new Error('Nu s-au putut încărca tranzacțiile agentului')
+
+    // ✅ Fetch propunerile agentului
+    const { data: proposals, error: propError } = await supabase
+        .from('Propuneri')
+        .select('*')
+        .eq('model_id', modelId)
+        .eq('agent_id', agentId)
+
+    if (propError)
+        throw new Error('Nu s-au putut încărca propunerile agentului')
+
+    // ✅ Calculează metricele cu helper-ul
+    const metrics = calculeazaEficientaAgentului(agent, transactions, proposals)
+
+    console.log(`Calculated metrics, metrics ${agentId}`, metrics)
+
+    return metrics
 }

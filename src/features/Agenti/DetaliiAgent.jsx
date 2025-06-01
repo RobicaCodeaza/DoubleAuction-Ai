@@ -12,6 +12,8 @@ import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { analizeazaTranzactii } from '@/lib/helpers'
 import { useAgentTransactii } from './useGetAgentTransaction'
+import { useAgentDetails } from './useGetAgentDetails'
+import { useState } from 'react'
 // import Empty from '@/ui/Empty'
 export function DetaliiAgent({
     nume,
@@ -23,6 +25,7 @@ export function DetaliiAgent({
     agentId,
     modelId,
 }) {
+    const [open, setOpen] = useState(false)
     const agent = {
         nume,
         comportament,
@@ -32,11 +35,25 @@ export function DetaliiAgent({
         rol,
         agentId,
     }
-    console.log('agentId', agentId)
 
     const { tranzactiiAgent, isLoading } = useAgentTransactii(modelId, agentId)
 
-    if (isLoading) {
+    const {
+        isLoading: isLoadingDetails,
+        refetchAgentDetails,
+        agentDetails,
+    } = useAgentDetails(modelId, agentId)
+    const afisareProcent =
+        agentDetails?.tipEficienta === 'cu_tranzactii' ? true : false
+
+    const handleOpenChange = async (newOpen) => {
+        if (newOpen) {
+            await refetchAgentDetails()
+        }
+        setOpen(newOpen)
+    }
+
+    if (isLoading || isLoadingDetails) {
         return (
             <div className="flex h-full w-full items-center justify-center">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900"></div>
@@ -51,13 +68,13 @@ export function DetaliiAgent({
         analizeazaTranzactii(tranzactiiAgent)
     console.log(
         'numarTranzactii',
-        numarTranzactii,
-        'totalCantitate',
-        totalCantitate,
-        'totalValoare',
-        totalValoare,
-        'mediePret',
-        mediePret
+        numarTranzactii
+        // 'totalCantitate',
+        // totalCantitate,
+        // 'totalValoare',
+        // totalValoare,
+        // 'mediePret',
+        // mediePret
     )
 
     const badgeColor = (key, value) => {
@@ -81,14 +98,14 @@ export function DetaliiAgent({
             }
         }
     }
-    const eficienta = {
-        comportament: 72,
-        pret: 85,
-        cantitate: 65,
-        viteza: 90,
-        trend: 78,
-        istoric: 69,
-    }
+    // const eficienta = {
+    //     comportament: 72,
+    //     pret: 85,
+    //     cantitate: 65,
+    //     viteza: 90,
+    //     trend: 78,
+    //     istoric: 69,
+    // }
 
     const efficiencyBadge = (value) => {
         if (value >= 80) return 'success'
@@ -98,94 +115,105 @@ export function DetaliiAgent({
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
                 <span className="flex">
                     <Button variant="outline">Detalii</Button>
                 </span>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[520px]">
-                <DialogHeader>
-                    <DialogTitle className="text-cyan-600">
-                        Detalii agent -{' '}
-                        <span className="font-semibold text-cyan-700 uppercase">
-                            {rol}
-                        </span>
-                    </DialogTitle>
-                    <DialogDescription
-                        className={'mt-2 flex items-center gap-2'}
-                    >
-                        <Badge
-                            className={
-                                agent.rol === 'vanzator'
-                                    ? 'bg-cyan-500 text-white'
-                                    : 'bg-rose-500 text-white'
-                            }
+            {agentDetails !== undefined && (
+                <DialogContent className="sm:max-w-[520px]">
+                    <DialogHeader>
+                        <DialogTitle className="text-cyan-600">
+                            Detalii agent -{' '}
+                            <span className="font-semibold text-cyan-700 uppercase">
+                                {rol}
+                            </span>
+                        </DialogTitle>
+                        <DialogDescription
+                            className={'mt-2 flex items-center gap-2'}
                         >
-                            Tranzactionat: {totalValoare} RON
-                        </Badge>
-                        <Badge className="border border-slate-300 bg-slate-100 text-slate-700">
-                            Preț: {mediePret}
-                        </Badge>
-                        <Badge className="border border-slate-300 bg-slate-100 text-slate-700">
-                            Cantitate: {totalCantitate}
-                        </Badge>
-                    </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <h4 className="text-sm font-medium text-slate-600 uppercase">
-                        Profil Comportamental
-                    </h4>
-                    {Object.entries(agent).map(([key, value]) => (
-                        <div
-                            key={key}
-                            className="flex items-center justify-between border-b pb-2"
-                        >
-                            <Label className="text-muted-foreground text-sm capitalize">
-                                {key.replace(/([A-Z])/g, ' $1')}
-                            </Label>
                             <Badge
-                                variant={badgeColor(key, value)}
-                                className="px-3 py-1 text-sm"
+                                className={
+                                    agent.rol === 'vanzator'
+                                        ? 'bg-cyan-500 text-white'
+                                        : 'bg-rose-500 text-white'
+                                }
                             >
-                                {value === true
-                                    ? 'Da'
-                                    : value === false
-                                      ? 'Nu'
-                                      : value}
+                                Tranzactionat: {totalValoare} RON
                             </Badge>
-                        </div>
-                    ))}
-                </div>
-                <div className="py-2">
-                    <h4 className="mb-2 text-sm font-medium text-slate-600 uppercase">
-                        Statistici de Eficiență
-                    </h4>
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        {Object.entries(eficienta).map(([key, value]) => (
+                            <Badge className="border border-slate-300 bg-slate-100 text-slate-700">
+                                Preț: {mediePret}
+                            </Badge>
+                            <Badge className="border border-slate-300 bg-slate-100 text-slate-700">
+                                Cantitate: {totalCantitate}
+                            </Badge>
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <h4 className="text-sm font-medium text-slate-600 uppercase">
+                            Profil Comportamental
+                        </h4>
+                        {Object.entries(agent).map(([key, value]) => (
                             <div
                                 key={key}
-                                className="flex items-center justify-between rounded-md border px-3 py-2"
+                                className="flex items-center justify-between border-b pb-2"
                             >
                                 <Label className="text-muted-foreground text-sm capitalize">
-                                    {key}
+                                    {key.replace(/([A-Z])/g, ' $1')}
                                 </Label>
                                 <Badge
-                                    variant={efficiencyBadge(value)}
+                                    variant={badgeColor(key, value)}
                                     className="px-3 py-1 text-sm"
                                 >
-                                    {value}%
+                                    {value === true
+                                        ? 'Da'
+                                        : value === false
+                                          ? 'Nu'
+                                          : value}
                                 </Badge>
                             </div>
                         ))}
                     </div>
-                </div>
-                <DialogFooter>
-                    {/* <Button variant="secondary" disabled>
+                    <div className="py-2">
+                        <h4 className="mb-2 text-sm font-medium text-slate-600 uppercase">
+                            Statistici de Eficiență
+                        </h4>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            {Object.entries(agentDetails).map(
+                                ([key, value]) => {
+                                    if (key === 'tipEficienta') return null
+                                    else
+                                        return (
+                                            <div
+                                                key={key}
+                                                className="flex items-center justify-between rounded-md border px-3 py-2"
+                                            >
+                                                <Label className="text-muted-foreground text-sm capitalize">
+                                                    {key}
+                                                </Label>
+                                                <Badge
+                                                    variant={efficiencyBadge(
+                                                        value
+                                                    )}
+                                                    className="px-3 py-1 text-sm"
+                                                >
+                                                    {value}{' '}
+                                                    {`${afisareProcent ? '%' : ''}`}
+                                                </Badge>
+                                            </div>
+                                        )
+                                }
+                            )}
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        {/* <Button variant="secondary" disabled>
                         Închis
                     </Button> */}
-                </DialogFooter>
-            </DialogContent>
+                    </DialogFooter>
+                </DialogContent>
+            )}
         </Dialog>
     )
 }
