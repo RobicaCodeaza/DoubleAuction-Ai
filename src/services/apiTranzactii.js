@@ -39,6 +39,8 @@ export async function deleteTranzactiiByModel(modelId) {
 
 export async function getTranzactiiAndUpdateDashboard(modelId) {
     console.log('getTranzactiiAndUpdateDashboard called with modelId:', modelId)
+    let insertedDashboard
+
     // ✅ Obține tranzacțiile
     const { data: transactions, error: tranzError } = await supabase
         .from('Tranzactii')
@@ -103,8 +105,9 @@ export async function getTranzactiiAndUpdateDashboard(modelId) {
         console.log('Eficiente calculate:', eficiente)
 
         // ✅ DOAR aici try/catch local, pentru funcția externă care poate arunca
+
         try {
-            const insertedDashboard = await createDashboardEntries(eficiente)
+            insertedDashboard = await createDashboardEntries(eficiente)
             console.log('Inserted dashboard entries:', insertedDashboard)
         } catch (error) {
             console.error('Eroare la inserarea în Dashboard:', error)
@@ -112,6 +115,15 @@ export async function getTranzactiiAndUpdateDashboard(modelId) {
         }
     }
 
+    const { data: updatedDashboard, error: refetchError } = await supabase
+        .from('Dashboard')
+        .select('*')
+        .eq('model_id', modelId)
+        .order('runda', { ascending: true })
+
+    if (refetchError)
+        throw new Error('Nu s-au putut încărca dashboard-ul după insert')
+
     // ✅ Returnează DOAR tranzacțiile
-    return transactions
+    return { transactions, updatedDashboard }
 }
