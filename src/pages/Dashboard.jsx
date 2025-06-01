@@ -11,7 +11,7 @@ import {
     HandCoins,
     HeartHandshake,
 } from 'lucide-react'
-import { useDashboards } from '@/features/Dashboard/useGetDashboard'
+// import { useDashboards } from '@/features/Dashboard/useGetDashboard'
 import { useModelContext } from '@/context/ContextSimulare'
 import {
     // calculeazaEficientePiataPeRunda,
@@ -23,38 +23,16 @@ import { useTransactionsAndDashboard } from '@/features/Tranzactii/useGetTranzac
 
 function Dashboard() {
     const { model } = useModelContext()
-    const { dashboard, isLoading } = useDashboards(model)
-    // const { isCreating: isCreatingDashboard, createDashboardEntry } =
-    //     useCreateDashboard
+    // const { dashboard, isLoading } = useDashboards(model)
 
     const { isLoading: isLoadingAgents, agents } = useAgents(model)
-    const { isLoading: isLoadingTransactions, transactions } =
-        useTransactionsAndDashboard(model)
+    const {
+        isLoading: isLoadingTransactions,
+        transactions,
+        dashboard,
+    } = useTransactionsAndDashboard(model)
 
-    // const eficiente = useMemo(() => {
-    //     if (!transactions || !agents) return []
-
-    //     const cantitatiDorite = agents
-    //         .filter((a) => a.rol === 'cumparator')
-    //         .map((a) => ({ agent_id: a.id, cantitate_initiala: a.cantitate }))
-
-    //     const tranzactiiPeRunda = {}
-    //     for (const t of transactions) {
-    //         if (!tranzactiiPeRunda[t.runda]) tranzactiiPeRunda[t.runda] = []
-    //         tranzactiiPeRunda[t.runda].push(t)
-    //     }
-
-    //     return Object.entries(tranzactiiPeRunda).map(([runda, tranz]) =>
-    //         calculeazaEficientePiataPeRunda(
-    //             Number(runda),
-    //             tranz,
-    //             cantitatiDorite
-    //         )
-    //     )
-    // }, [transactions, agents])
-    // console.log('eficiente', eficiente)
-
-    if (isLoading || isLoadingTransactions || isLoadingAgents) {
+    if (isLoadingTransactions || isLoadingAgents) {
         return (
             <div className="flex h-full w-full items-center justify-center">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900"></div>
@@ -75,7 +53,7 @@ function Dashboard() {
     }, 0)
     console.log('maxRunde', maxRunde)
 
-    const medieTranzactiiPerRunda = (transactions?.length / maxRunde).toFixed(2)
+    const medieTranzactiiPerRunda = (transactions?.length / maxRunde).toFixed(0)
     const totalTranzactii = transactions?.length
     const procentTranzactiiRundaPerTotal = (
         (medieTranzactiiPerRunda / totalTranzactii) *
@@ -86,7 +64,7 @@ function Dashboard() {
         transactions?.reduce((acc, tx) => {
             return acc + tx.cantitate
         }, 0) / maxRunde
-    ).toFixed(2)
+    ).toFixed(0)
     const totalCantitate = transactions?.reduce((acc, tx) => {
         return acc + tx.cantitate
     }, 0)

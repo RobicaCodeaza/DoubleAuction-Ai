@@ -5,15 +5,38 @@ const ContextSimulare = createContext()
 
 function ContextSimulareProvider({ children }) {
     const { models, isLoading } = useModels()
-    const [model, setModel] = useState(null) // { id, nume }
-    const [etapa, setEtapa] = useState(0)
+
+    // 🔶 Inițializare din localStorage (dacă există)
+    const [model, setModel] = useState(() => {
+        const saved = localStorage.getItem('simulareModel')
+        return saved ? JSON.parse(saved) : null
+    })
+
+    const [etapa, setEtapa] = useState(() => {
+        const saved = localStorage.getItem('simulareEtapa')
+        return saved ? parseInt(saved, 10) : 0
+    })
+
+    // 🔶 La încărcarea modelelor, setăm primul model dacă nu avem deja unul salvat
     useEffect(() => {
-        if (!isLoading && models) {
-            // Dacă nu există un model selectat, setăm primul model ca fiind selectat
-            setModel(models[0])
-            // console.log('modele', models)
+        if (!isLoading && models && models.length > 0 && !model) {
+            const firstModel = { id: models[0].id, nume: models[0].nume }
+            setModel(firstModel)
+            localStorage.setItem('simulareModel', JSON.stringify(firstModel))
         }
-    }, [models, isLoading])
+    }, [models, isLoading, model])
+
+    // 🔶 Salvăm modelul în localStorage la schimbare
+    useEffect(() => {
+        if (model) {
+            localStorage.setItem('simulareModel', JSON.stringify(model))
+        }
+    }, [model])
+
+    // 🔶 Salvăm etapa în localStorage la schimbare
+    useEffect(() => {
+        localStorage.setItem('simulareEtapa', etapa)
+    }, [etapa])
 
     function selecteazaModel(id) {
         const modelNou = models.find((m) => m.id === id)
@@ -22,12 +45,11 @@ function ContextSimulareProvider({ children }) {
         }
     }
 
-    // 🔁 Funcție: schimbă etapa
     function etapaUrmatoare() {
         setEtapa((etapa) => etapa + 1)
     }
     function etapaAnterioara() {
-        setEtapa((etapa) => etapa - 1)
+        setEtapa((etapa) => (etapa > 0 ? etapa - 1 : 0))
     }
 
     return (
@@ -53,4 +75,5 @@ function useModelContext() {
         )
     return context
 }
+
 export { ContextSimulareProvider, useModelContext }
