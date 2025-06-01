@@ -269,14 +269,12 @@ export function calculeazaEficientaAgentului(agent, transactions, proposals) {
     if (tranzactiiAgent.length === 0) {
         if (propuneriAgent.length === 0) {
             return {
-                succesRate: 0,
+                rataSuccess: 0,
                 mediePropuneriPeRunda: 0,
                 scorEfort: 0,
                 maxRunda: 0,
                 maxPretPropus: 0,
                 maxCantitatePropusa: 0,
-                eficientaTrend,
-                eficientaIstoric,
                 tipEficienta: 'fara_propuneri',
             }
         }
@@ -299,7 +297,7 @@ export function calculeazaEficientaAgentului(agent, transactions, proposals) {
         )
 
         return {
-            succesRate: 0,
+            rataSucces: 0,
             mediePropuneriPeRunda: Number(mediePropuneriPeRunda.toFixed(2)),
             scorEfort: Number(scorEfort.toFixed(2)),
             maxRunda,

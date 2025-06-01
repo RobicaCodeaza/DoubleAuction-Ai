@@ -46,6 +46,8 @@ export function DetaliiAgent({
     const afisareProcent =
         agentDetails?.tipEficienta === 'cu_tranzactii' ? true : false
 
+    console.log('agentDetails', agentDetails)
+
     const handleOpenChange = async (newOpen) => {
         if (newOpen) {
             await refetchAgentDetails()
