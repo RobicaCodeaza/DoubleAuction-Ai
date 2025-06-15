@@ -128,10 +128,11 @@ export function calculeazaEficientePiataPeRunda(
     const pretEchilibru =
         totalCantitate > 0 ? totalPretCantitate / totalCantitate : 0
 
-    const cumparatori = [...new Set(tranzactii.map((t) => t.cumparator))]
-    const cantitateDorita = cantitatiDorite
-        .filter((a) => cumparatori.includes(a.agent_id))
-        .reduce((sum, a) => sum + a.cantitate_initiala, 0)
+    // const cumparatori = [...new Set(tranzactii.map((t) => t.cumparator))]
+    const cantitateDorita = cantitatiDorite.reduce(
+        (sum, a) => sum + a.cantitate_initiala,
+        0
+    )
 
     const eficienta_alocativa =
         cantitateDorita > 0 ? (totalCantitate / cantitateDorita) * 100 : 0
@@ -297,7 +298,7 @@ export function calculeazaEficientaAgentului(agent, transactions, proposals) {
         )
 
         return {
-            rataSucces: 0,
+            rataSuccess: 0,
             mediePropuneriPeRunda: Number(mediePropuneriPeRunda.toFixed(2)),
             scorEfort: Number(scorEfort.toFixed(2)),
             maxRunda,
