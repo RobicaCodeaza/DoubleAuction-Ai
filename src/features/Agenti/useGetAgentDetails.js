@@ -13,5 +13,6 @@ export function useAgentDetails(modelId, agentId) {
         enabled: false, // Only run the query if we press 'detalii'
     })
 
+    console.log('useAgentDetails', agentDetails)
     return { isLoading, error, agentDetails, refetchAgentDetails }
 }

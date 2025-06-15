@@ -13,7 +13,7 @@ import { Badge } from '@/components/ui/badge'
 import { analizeazaTranzactii } from '@/lib/helpers'
 import { useAgentTransactii } from './useGetAgentTransaction'
 import { useAgentDetails } from './useGetAgentDetails'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import Empty from '@/ui/Empty'
 export function DetaliiAgent({
     nume,
@@ -46,14 +46,51 @@ export function DetaliiAgent({
     const afisareProcent =
         agentDetails?.tipEficienta === 'cu_tranzactii' ? true : false
 
-    console.log('agentDetails', agentDetails)
-
     const handleOpenChange = async (newOpen) => {
-        if (newOpen) {
-            await refetchAgentDetails()
-        }
+        if (newOpen) await refetchAgentDetails()
+
         setOpen(newOpen)
     }
+
+    useEffect(() => {
+        if (!open || !agentDetails) return
+
+        const saved = localStorage.getItem('savedAgents')
+        let savedAgents = saved ? JSON.parse(saved) : []
+
+        const exists = savedAgents.some(
+            (item) => item.agent.agentId === agentId
+        )
+
+        if (!exists) {
+            const agent = {
+                nume,
+                comportament,
+                ascultaTrend,
+                invataIstoric,
+                prioritate,
+                rol,
+                agentId,
+            }
+
+            const combined = { agent, agentDetails }
+            savedAgents.push(combined)
+            localStorage.setItem('savedAgents', JSON.stringify(savedAgents))
+            console.log(`Agent ${agentId} salvat în localStorage`)
+        } else {
+            console.log(`Agent ${agentId} există deja în localStorage`)
+        }
+    }, [
+        agentDetails,
+        open,
+        agentId,
+        nume,
+        comportament,
+        ascultaTrend,
+        invataIstoric,
+        prioritate,
+        rol,
+    ])
 
     if (isLoading || isLoadingDetails) {
         return (
